@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace OrderingSystem.Model
 {
     public class MenuDetail
@@ -10,6 +11,7 @@ namespace OrderingSystem.Model
         private TimeSpan estimated_time;
         private int maxOrder;
         private int purchaseQty;
+        private List<Ingredient> ingredientList;
 
         public int Menudetail_id { get => menudetail_id; }
         public double Price { get => price; }
@@ -17,8 +19,9 @@ namespace OrderingSystem.Model
         public double DiscountRate { get => discountRate; }
         public TimeSpan EstimatedTime { get => estimated_time; }
         public int MaxOrder { get => maxOrder; }
-        public int PurchaseQty { get => purchaseQty; set => purchaseQty = value; }
 
+        public List<Ingredient> RemoveIngredientList { get => ingredientList; set => ingredientList = value; }
+        public int PurchaseQty { get => purchaseQty; set => purchaseQty = value; }
         public static MenuDetailBuilder Builder() => new MenuDetailBuilder();
 
         public double getDiscountedPrice()
@@ -73,6 +76,12 @@ namespace OrderingSystem.Model
             public MenuDetailBuilder SetPurchaseQty(int purchaseQty)
             {
                 _menuDetail.purchaseQty = purchaseQty;
+                return this;
+            }
+
+            public MenuDetailBuilder SetRemoveIngredientList(List<Ingredient> text)
+            {
+                _menuDetail.ingredientList = text;
                 return this;
             }
 

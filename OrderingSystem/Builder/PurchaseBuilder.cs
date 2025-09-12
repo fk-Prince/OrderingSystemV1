@@ -13,15 +13,12 @@ namespace OrderingSystem.Builder
                 .SetPrice(xx.getDiscountedPrice())
                 .Build();
 
-
-
             return Menu.Builder()
                 .SetMenuName(m.MenuName)
                 .SetMenuID(m.Menu_id)
                 .SetBranchID(m.Branches_id)
                 .SetMenuDetail(mm)
                 .Build();
-
         }
     }
 }

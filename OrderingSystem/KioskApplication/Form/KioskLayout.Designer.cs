@@ -38,6 +38,7 @@
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             this.cartPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Button4 = new Guna.UI2.WinForms.Guna2Button();
             this.total = new System.Windows.Forms.Label();
             this.vat = new System.Windows.Forms.Label();
             this.coupon = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
             this.t = new System.Windows.Forms.Timer(this.components);
             this.guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
-            this.guna2Button4 = new Guna.UI2.WinForms.Guna2Button();
             this.guna2ShadowPanel2.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
             this.cartPanel.SuspendLayout();
@@ -66,30 +66,36 @@
             this.guna2ShadowPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.guna2ShadowPanel2.BackColor = System.Drawing.Color.Transparent;
+            this.guna2ShadowPanel2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.guna2ShadowPanel2.Controls.Add(this.flowCat);
             this.guna2ShadowPanel2.Controls.Add(this.guna2TextBox1);
             this.guna2ShadowPanel2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.guna2ShadowPanel2.Location = new System.Drawing.Point(1, 57);
-            this.guna2ShadowPanel2.MaximumSize = new System.Drawing.Size(1920, 50);
-            this.guna2ShadowPanel2.MinimumSize = new System.Drawing.Size(1300, 50);
+            this.guna2ShadowPanel2.Location = new System.Drawing.Point(17, 9);
+            this.guna2ShadowPanel2.MaximumSize = new System.Drawing.Size(1920, 102);
+            this.guna2ShadowPanel2.MinimumSize = new System.Drawing.Size(1058, 102);
             this.guna2ShadowPanel2.Name = "guna2ShadowPanel2";
             this.guna2ShadowPanel2.ShadowColor = System.Drawing.Color.Black;
             this.guna2ShadowPanel2.ShadowDepth = 10;
             this.guna2ShadowPanel2.ShadowShift = 2;
-            this.guna2ShadowPanel2.Size = new System.Drawing.Size(1300, 50);
+            this.guna2ShadowPanel2.Size = new System.Drawing.Size(1058, 102);
             this.guna2ShadowPanel2.TabIndex = 0;
             // 
             // flowCat
             // 
-            this.flowCat.Location = new System.Drawing.Point(373, 2);
+            this.flowCat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowCat.BackColor = System.Drawing.Color.Transparent;
+            this.flowCat.Location = new System.Drawing.Point(348, 29);
+            this.flowCat.MaximumSize = new System.Drawing.Size(1920, 90);
+            this.flowCat.MinimumSize = new System.Drawing.Size(710, 90);
             this.flowCat.Name = "flowCat";
-            this.flowCat.Size = new System.Drawing.Size(927, 58);
+            this.flowCat.Size = new System.Drawing.Size(710, 90);
             this.flowCat.TabIndex = 1;
             // 
             // guna2TextBox1
             // 
+            this.guna2TextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2TextBox1.AutoRoundedCorners = true;
+            this.guna2TextBox1.BackColor = System.Drawing.Color.Transparent;
             this.guna2TextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.guna2TextBox1.DefaultText = "";
             this.guna2TextBox1.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -97,24 +103,32 @@
             this.guna2TextBox1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.guna2TextBox1.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.guna2TextBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2TextBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.guna2TextBox1.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.guna2TextBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.guna2TextBox1.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.guna2TextBox1.IconLeft = ((System.Drawing.Image)(resources.GetObject("guna2TextBox1.IconLeft")));
             this.guna2TextBox1.IconLeftSize = new System.Drawing.Size(25, 25);
-            this.guna2TextBox1.Location = new System.Drawing.Point(118, 7);
+            this.guna2TextBox1.Location = new System.Drawing.Point(22, 29);
+            this.guna2TextBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.guna2TextBox1.MaximumSize = new System.Drawing.Size(290, 47);
+            this.guna2TextBox1.MaxLength = 255;
             this.guna2TextBox1.Name = "guna2TextBox1";
+            this.guna2TextBox1.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(196)))), ((int)(((byte)(202)))));
             this.guna2TextBox1.PlaceholderText = "Search Menu";
             this.guna2TextBox1.SelectedText = "";
-            this.guna2TextBox1.Size = new System.Drawing.Size(242, 35);
+            this.guna2TextBox1.Size = new System.Drawing.Size(290, 41);
             this.guna2TextBox1.TabIndex = 0;
+            this.guna2TextBox1.TextChanged += new System.EventHandler(this.guna2TextBox1_TextChanged);
             // 
             // flowMenu
             // 
-            this.flowMenu.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.flowMenu.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowMenu.AutoScroll = true;
+            this.flowMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.flowMenu.Location = new System.Drawing.Point(17, 117);
-            this.flowMenu.MaximumSize = new System.Drawing.Size(1060, 2000);
+            this.flowMenu.MaximumSize = new System.Drawing.Size(1920, 2000);
             this.flowMenu.MinimumSize = new System.Drawing.Size(1060, 653);
             this.flowMenu.Name = "flowMenu";
             this.flowMenu.Size = new System.Drawing.Size(1060, 653);
@@ -125,11 +139,11 @@
             this.guna2Panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.guna2Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.guna2Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.guna2Panel1.Controls.Add(this.guna2ShadowPanel2);
             this.guna2Panel1.Controls.Add(this.flowMenu);
             this.guna2Panel1.Location = new System.Drawing.Point(100, 0);
             this.guna2Panel1.MaximumSize = new System.Drawing.Size(1920, 2000);
-            this.guna2Panel1.MinimumSize = new System.Drawing.Size(1100, 770);
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(1100, 770);
             this.guna2Panel1.TabIndex = 1;
@@ -161,7 +175,7 @@
             this.cartPanel.Controls.Add(this.guna2Panel2);
             this.cartPanel.Controls.Add(this.flowCart);
             this.cartPanel.Controls.Add(this.guna2Button2);
-            this.cartPanel.Location = new System.Drawing.Point(880, 0);
+            this.cartPanel.Location = new System.Drawing.Point(1302, 2);
             this.cartPanel.MaximumSize = new System.Drawing.Size(420, 2000);
             this.cartPanel.MinimumSize = new System.Drawing.Size(420, 770);
             this.cartPanel.Name = "cartPanel";
@@ -191,6 +205,22 @@
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(414, 215);
             this.guna2Panel2.TabIndex = 6;
+            // 
+            // guna2Button4
+            // 
+            this.guna2Button4.BorderRadius = 2;
+            this.guna2Button4.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button4.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button4.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.guna2Button4.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.guna2Button4.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.guna2Button4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.guna2Button4.ForeColor = System.Drawing.Color.White;
+            this.guna2Button4.Location = new System.Drawing.Point(148, 174);
+            this.guna2Button4.Name = "guna2Button4";
+            this.guna2Button4.Size = new System.Drawing.Size(257, 34);
+            this.guna2Button4.TabIndex = 5;
+            this.guna2Button4.Text = "Confirm Order";
             // 
             // total
             // 
@@ -375,37 +405,21 @@
             this.guna2Button3.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.guna2Button3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2Button3.ForeColor = System.Drawing.Color.White;
-            this.guna2Button3.Location = new System.Drawing.Point(1, 6);
+            this.guna2Button3.Location = new System.Drawing.Point(12, 275);
             this.guna2Button3.Name = "guna2Button3";
             this.guna2Button3.Size = new System.Drawing.Size(78, 45);
             this.guna2Button3.TabIndex = 4;
             this.guna2Button3.Text = "guna2Button3";
-            // 
-            // guna2Button4
-            // 
-            this.guna2Button4.BorderRadius = 2;
-            this.guna2Button4.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.guna2Button4.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.guna2Button4.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.guna2Button4.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.guna2Button4.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.guna2Button4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.guna2Button4.ForeColor = System.Drawing.Color.White;
-            this.guna2Button4.Location = new System.Drawing.Point(148, 174);
-            this.guna2Button4.Name = "guna2Button4";
-            this.guna2Button4.Size = new System.Drawing.Size(257, 34);
-            this.guna2Button4.TabIndex = 5;
-            this.guna2Button4.Text = "Confirm Order";
+            this.guna2Button3.Click += new System.EventHandler(this.guna2Button3_Click);
             // 
             // KioskLayout
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(228)))), ((int)(((byte)(228)))));
+            this.BackColor = System.Drawing.Color.IndianRed;
             this.ClientSize = new System.Drawing.Size(1300, 770);
             this.Controls.Add(this.guna2Button3);
             this.Controls.Add(this.cartPanel);
             this.Controls.Add(this.guna2Button1);
-            this.Controls.Add(this.guna2ShadowPanel2);
             this.Controls.Add(this.guna2Panel1);
             this.ForeColor = System.Drawing.Color.Transparent;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -434,7 +448,6 @@
         private Guna.UI2.WinForms.Guna2Panel cartPanel;
         private Guna.UI2.WinForms.Guna2Button guna2Button2;
         private System.Windows.Forms.Timer t;
-        private Guna.UI2.WinForms.Guna2Button guna2Button3;
         private System.Windows.Forms.FlowLayoutPanel flowCart;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
         private System.Windows.Forms.Label label3;
@@ -450,6 +463,7 @@
         private System.Windows.Forms.Label coupon;
         private System.Windows.Forms.Label subtotal;
         private Guna.UI2.WinForms.Guna2Button guna2Button4;
+        private Guna.UI2.WinForms.Guna2Button guna2Button3;
     }
 }
 

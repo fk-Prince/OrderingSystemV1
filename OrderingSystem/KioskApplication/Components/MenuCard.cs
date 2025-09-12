@@ -59,8 +59,8 @@ namespace OrderingSystem.KioskApplication.Cards
 
         private void hoverEffects(Control c)
         {
-            c.MouseEnter += (s, e) => { BorderColor = Color.FromArgb(94, 148, 255); };
-            c.MouseLeave += (s, e) => { BorderColor = Color.FromArgb(34, 34, 34); };
+            c.MouseEnter += (s, e) => { BorderColor = Color.DarkRed; BorderThickness = 2; };
+            c.MouseLeave += (s, e) => { BorderColor = Color.FromArgb(34, 34, 34); BorderThickness = 1; };
             c.Cursor = Cursors.Hand;
 
             foreach (Control cc in c.Controls)

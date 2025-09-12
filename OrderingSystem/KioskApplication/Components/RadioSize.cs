@@ -4,10 +4,10 @@ using OrderingSystem.Model;
 
 namespace OrderingSystem.KioskApplication.Components
 {
-    public partial class RadioSample : Guna2Panel
+    public partial class RadioSize : Guna2Panel
     {
         public event EventHandler<MenuDetail> RadioCheckedChanged;
-        public RadioSample(string namex, string xprice, MenuDetail m)
+        public RadioSize(string namex, string xprice, MenuDetail m)
         {
             InitializeComponent();
 

@@ -1,6 +1,6 @@
 ﻿namespace OrderingSystem.KioskApplication.Components
 {
-    partial class SizeCard
+    partial class SizeLayout
     {
         /// <summary>
         /// Required designer variable.

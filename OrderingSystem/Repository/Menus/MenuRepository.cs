@@ -14,6 +14,7 @@ namespace OrderingSystem.Repository.Menus
     {
         public async Task<List<Menu>> getFrequentlyOrderedTogether(Menu menu)
         {
+
             var db = DatabaseHandler.getInstance();
             List<Menu> menuList = new List<Menu>();
             try
@@ -42,6 +43,7 @@ namespace OrderingSystem.Repository.Menus
                                 .SetMenuDescription(reader.GetString("menu_description"))
                                 .SetMenuName(reader.GetString("menu_name"))
                                 .SetMenuCategoryID(reader.GetInt32("category_id"))
+                                .SetBranchID(reader.GetInt32("branches_id"))
                                 .SetMenuDetail(menuDetail)
                                 .Build();
 

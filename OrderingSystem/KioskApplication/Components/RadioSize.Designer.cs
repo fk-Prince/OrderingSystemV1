@@ -1,6 +1,6 @@
 ﻿namespace OrderingSystem.KioskApplication.Components
 {
-    partial class RadioSample
+    partial class RadioSize
     {
         /// <summary>
         /// Required designer variable.

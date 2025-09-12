@@ -20,7 +20,7 @@ namespace OrderingSystem
         private ICategoryRepository categoryRepository;
         private Guna2Button lastActiveButton;
         private CartServices cartServices;
-        private bool isShowing = true;
+        private bool isShowing = false;
         private int x;
         public KioskLayout()
         {
@@ -78,8 +78,10 @@ namespace OrderingSystem
             {
                 lastActiveButton.Paint -= bottomBorder;
                 lastActiveButton.Invalidate();
-            }
+                lastActiveButton.ForeColor = Color.FromArgb(34, 34, 34);
 
+            }
+            b.ForeColor = Color.DarkRed;
             lastActiveButton = b;
             b.Paint -= bottomBorder;
             b.Paint += bottomBorder;
@@ -87,7 +89,7 @@ namespace OrderingSystem
         private void bottomBorder(object sender, PaintEventArgs e)
         {
             Control btn = (sender) as Control;
-            using (Pen p = new Pen(Color.FromArgb(34, 34, 34), 3))
+            using (Pen p = new Pen(Color.DarkRed, 3))
             {
                 e.Graphics.DrawLine(p, 0, btn.Height - 5, btn.Width, btn.Height - 5);
             }
@@ -116,7 +118,7 @@ namespace OrderingSystem
         {
             if (isShowing)
             {
-                x += 30;
+                x += 50;
                 cartPanel.Location = new Point(x, 0);
                 if (x >= ClientSize.Width)
                 {
@@ -127,11 +129,12 @@ namespace OrderingSystem
             }
             else
             {
-                x -= 30;
+                x -= 62;
                 cartPanel.Location = new Point(x, 0);
                 if (cartPanel.Right <= ClientSize.Width)
                 {
-                    cartPanel.Location = new Point(x, 0);
+                    int pos = ClientSize.Width - cartPanel.Width;
+                    cartPanel.Location = new Point(pos, 0);
                     isShowing = !isShowing;
                     t.Stop();
                 }
@@ -140,6 +143,18 @@ namespace OrderingSystem
         private void guna2Button1_Click(object sender, EventArgs e)
         {
             t.Start();
+        }
+
+        private void guna2Button3_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+            //AddMenu add = new AddMenu();
+            //add.Show();
+        }
+
+        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
