@@ -66,9 +66,11 @@ namespace OrderingSystem.CashierApp.Forms
                     double subtotald = om.Sum(o => o.TotalPrice);
                     double couponRated = om.Sum(o => o.TotalPrice * o.CouponRate);
                     double vatd = om.Sum(o => (o.TotalPrice - o.CouponRate) * 0.12);
+                    double rated = om[0].CouponRate * 100;
                     double totald = (subtotald - couponRated) + vatd;
                     subtotal.Text = subtotald.ToString("N2");
                     coupon.Text = couponRated.ToString("N2");
+                    rate.Text = rated != 0 ? rated.ToString() + "%" : "";
                     vat.Text = vatd.ToString("N2");
                     total.Text = totald.ToString("N2");
                 }
@@ -78,6 +80,7 @@ namespace OrderingSystem.CashierApp.Forms
         {
             table.Clear();
             subtotal.Text = "0.00";
+            order_id = "";
             coupon.Text = "0.00";
             vat.Text = "0.00";
             total.Text = "0.00";
@@ -96,6 +99,11 @@ namespace OrderingSystem.CashierApp.Forms
         {
             try
             {
+                if (string.IsNullOrEmpty(order_id))
+                {
+                    MessageBox.Show("No Orders");
+                    return;
+                }
                 bool result = await orderServices.payOrder(order_id, staff_id, payment_method);
                 if (result) MessageBox.Show("Payment Success");
                 else MessageBox.Show("Payment Failed");
@@ -105,5 +113,8 @@ namespace OrderingSystem.CashierApp.Forms
                 MessageBox.Show("Internal Server Error.");
             }
         }
+
+
+
     }
 }

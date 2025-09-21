@@ -58,7 +58,7 @@
             this.guna2Panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(1350, 661);
+            this.guna2Panel1.Size = new System.Drawing.Size(1366, 700);
             this.guna2Panel1.TabIndex = 0;
             // 
             // panel2
@@ -119,14 +119,14 @@
             this.guna2Button20.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.guna2Button20.TextOffset = new System.Drawing.Point(20, 0);
             // 
-            // s2
+            // ingredientSub
             // 
             this.ingredientSub.Controls.Add(this.guna2Button2);
             this.ingredientSub.Controls.Add(this.guna2Button18);
             this.ingredientSub.Controls.Add(this.guna2Button17);
             this.ingredientSub.Dock = System.Windows.Forms.DockStyle.Top;
             this.ingredientSub.Location = new System.Drawing.Point(0, 334);
-            this.ingredientSub.Name = "s2";
+            this.ingredientSub.Name = "ingredientSub";
             this.ingredientSub.Size = new System.Drawing.Size(228, 100);
             this.ingredientSub.TabIndex = 10;
             this.ingredientSub.Visible = false;
@@ -341,7 +341,7 @@
             this.mm.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.mm.MinimumSize = new System.Drawing.Size(1121, 660);
             this.mm.Name = "mm";
-            this.mm.Size = new System.Drawing.Size(1121, 660);
+            this.mm.Size = new System.Drawing.Size(1137, 699);
             this.mm.TabIndex = 0;
             // 
             // CashierLayout
@@ -349,10 +349,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1350, 661);
             this.Controls.Add(this.guna2Panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MinimumSize = new System.Drawing.Size(1366, 700);
             this.Name = "CashierLayout";
             this.Text = "CashierLayout";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.guna2Panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ingredientSub.ResumeLayout(false);
