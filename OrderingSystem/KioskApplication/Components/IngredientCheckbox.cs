@@ -6,9 +6,9 @@ namespace OrderingSystem.KioskApplication.Components
 {
     public partial class IngredientCheckbox : Guna2Panel
     {
-        public event EventHandler<Ingredient> Checked;
-        public event EventHandler<Ingredient> unChecked;
-        public IngredientCheckbox(Ingredient i)
+        public event EventHandler<IngredientModel> Checked;
+        public event EventHandler<IngredientModel> unChecked;
+        public IngredientCheckbox(IngredientModel i)
         {
             InitializeComponent();
             name.Text = i.IngredientName;

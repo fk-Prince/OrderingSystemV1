@@ -5,28 +5,28 @@ using System.Threading.Tasks;
 using Guna.UI2.WinForms;
 using OrderingSystem.Model;
 using OrderingSystem.Repository.Ingredients;
-using Menu = OrderingSystem.Model.Menu;
+using MenuModel = OrderingSystem.Model.MenuModel;
 
 namespace OrderingSystem.KioskApplication.Components
 {
     public partial class RemoveableIngredientLayout : Guna2Panel
     {
         private IIngredientRepository ingredientRepository = new IngredientRepository();
-        private Menu menu;
-        private List<Ingredient> removeIngredients;
+        private MenuModel menu;
+        private List<IngredientModel> removeIngredients;
 
-        public RemoveableIngredientLayout(Menu menu)
+        public RemoveableIngredientLayout(MenuModel menu)
         {
             InitializeComponent();
             this.menu = menu;
-            removeIngredients = new List<Ingredient>();
+            removeIngredients = new List<IngredientModel>();
             HandleCreated += async (s, e) => await init();
             cardLayout();
         }
-        public List<Ingredient> getRemoveIngredient() { return removeIngredients; }
+        public List<IngredientModel> getRemoveIngredient() { return removeIngredients; }
         private async Task init()
         {
-            List<Ingredient> ingredientList = await ingredientRepository.getIngredientsOfMenu(menu);
+            List<IngredientModel> ingredientList = await ingredientRepository.getIngredientsOfMenu(menu);
             display(ingredientList);
         }
         private void cardLayout()
@@ -38,7 +38,7 @@ namespace OrderingSystem.KioskApplication.Components
             BackColor = Color.Transparent;
         }
 
-        private void display(List<Ingredient> ingredientList)
+        private void display(List<IngredientModel> ingredientList)
         {
             int y = 30;
             foreach (var i in ingredientList)

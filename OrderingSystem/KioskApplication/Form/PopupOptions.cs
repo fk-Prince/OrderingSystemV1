@@ -1,97 +1,106 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using OrderingSystem.Builder;
-using OrderingSystem.KioskApplication.Components;
+using OrderingSystem.Exceptions;
+using OrderingSystem.KioskApplication.Options;
+using OrderingSystem.KioskApplication.Services;
 using OrderingSystem.Model;
 using OrderingSystem.Repository.Menus;
-using Menu = OrderingSystem.Model.Menu;
 
 namespace OrderingSystem.KioskApplication
 {
     public partial class PopupOptions : Form
     {
-        private Menu menu;
-        private List<Menu> orderList;
-        private FrequentlyOrderedLayout freq;
-        private Menu selectedSize;
-        public event EventHandler<List<Menu>> orderListEvent;
-        private RemoveableIngredientLayout r;
-        private List<Ingredient> removeIngredients;
-        public PopupOptions(Menu menu)
+
+        private IMenuRepository _menuRepository;
+        private IMenuOptions menuOptions;
+
+        public event EventHandler<List<MenuDetailModel>> orderListEvent;
+        private List<MenuDetailModel> orderList;
+
+
+        public PopupOptions(IMenuRepository _menuRepository, MenuDetailModel menu)
         {
             InitializeComponent();
-            this.menu = menu;
-            this.orderList = new List<Menu>();
+            this._menuRepository = _menuRepository;
+            orderList = new List<MenuDetailModel>();
 
-            displayPopup();
+            displayDetails(menu);
+            HandleCreated += async (s, e) => { await init(menu); };
         }
 
-        private void displayPopup()
+        private void displayDetails(MenuDetailModel menu)
         {
+            image.Image = menu.Image;
+            menuName.Text = menu.MenuName;
+            description.Text = menu.MenuDescription;
+        }
 
-            IMenuRepository menuRepository = new MenuRepository();
-            if (menu.MenuDetailList.Count > 1)
+        private async Task init(MenuDetailModel menu)
+        {
+            try
             {
-                SizeLayout sc = new SizeLayout(menu, menu.MenuDetailList);
-                sc.Margin = new Padding(20, 0, 0, 0);
-                sc.SizeSelected += (s, e) =>
+
+                if (await _menuRepository.isMenuPackage(menu))
                 {
-                    selectedSize = e;
-                    displayR(selectedSize);
-                };
-                sc.defaultSelection();
-                flowPanel.Controls.Add(sc);
+                    menuOptions = new PackageOption(_menuRepository, flowPanel);
+                }
+                else
+                {
+                    menuOptions = new RegularOption(_menuRepository, flowPanel);
+                }
+
+                if (menuOptions is IOutOfOrder e)
+                {
+                    e.outOfOrder += (ses, ese) =>
+                    {
+                        outofstock.Visible = true;
+                        bb.Enabled = false;
+                    };
+                }
+                await menuOptions.menuOptions(menu);
             }
-            else
+            catch (Exception)
             {
-
-                selectedSize = new PurchaseBuilder().Build(menu, menu.MenuDetailList[0]);
+                MessageBox.Show("Internal Server Error.");
             }
-
-            freq = new FrequentlyOrderedLayout(menuRepository, menu);
-            freq.Margin = new Padding(20, 30, 0, 0);
-            flowPanel.Controls.Add(freq);
-
-            displayR(selectedSize);
         }
 
-        private void displayR(Menu m)
-        {
-            if (m.MenuDetail == null) return;
-            if (r != null && flowPanel.Controls.Contains(r))
-            {
-                flowPanel.Controls.Remove(r);
-            }
-            r = new RemoveableIngredientLayout(m);
-            r.Margin = new Padding(20, 30, 0, 0);
-            flowPanel.Controls.Add(r);
-            //flowPanel.Controls.SetChildIndex(r, flowPanel.Controls.Count - 1);
-
-        }
         private void closePopup(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
         }
-        private void confirmOrder(object sender, EventArgs e)
+        private async void confirmOrder(object sender, EventArgs e)
         {
+            try
+            {
+                if (menuOptions != null)
+                {
+                    if (menuOptions is ISelectedFrequentlyOrdered freqOrdered)
+                    {
+                        var frequentlyOrdered = freqOrdered.getFrequentlyOrdered();
+                        if (frequentlyOrdered != null)
+                            orderList.AddRange(frequentlyOrdered);
+                    }
 
-            if (selectedSize == null || menu.MenuDetailList.Count < 1)
-            {
-                MessageBox.Show("no selected size (required)");
-                return;
+                    var orders = await menuOptions.confirmOrder();
+                    if (orders == null || orders.Count == 0)
+                        return;
+
+                    orderList.AddRange(orders);
+                    orderListEvent?.Invoke(this, orderList);
+                    DialogResult = DialogResult.OK;
+                }
             }
-            if (r != null)
+            catch (Exception ex) when (ex is OutOfOrder || ex is NoSelectedMenu)
             {
-                selectedSize.MenuDetail.RemoveIngredientList = r.getRemoveIngredient();
+                MessageBox.Show(ex.Message);
             }
-            orderList.Add(selectedSize);
-            List<Menu> md = freq.getFrequentlyOrderList();
-            orderList.AddRange(md);
-            orderListEvent?.Invoke(this, orderList);
-            //string json = JsonConvert.SerializeObject(orderList);
-            //Console.WriteLine(json);
-            DialogResult = DialogResult.OK;
+            catch (Exception)
+            {
+                MessageBox.Show("Internal Server Error");
+            }
         }
     }
 }

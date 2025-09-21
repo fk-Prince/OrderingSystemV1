@@ -4,19 +4,25 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
-using Menu = OrderingSystem.Model.Menu;
+using OrderingSystem.Model;
+using OrderingSystem.Repository.Menus;
 
 namespace OrderingSystem.KioskApplication.Cards
 {
     public partial class MenuCard : Guna2Panel
 
     {
-        private Menu menu;
-        public event EventHandler<List<Menu>> orderList;
+        private MenuDetailModel menu;
+        private IMenuRepository menuRepository;
+        public event EventHandler<List<MenuDetailModel>> orderListEvent;
 
-        public MenuCard(Menu menu)
+
+        public MenuDetailModel Menu => menu;
+
+        public MenuCard(IMenuRepository menuRepository, MenuDetailModel menu)
         {
             InitializeComponent();
+            this.menuRepository = menuRepository;
             this.menu = menu;
             displayMenu();
             cardLayout();
@@ -44,10 +50,10 @@ namespace OrderingSystem.KioskApplication.Cards
 
         private void menuClicked(object sender, EventArgs b)
         {
-            PopupOptions popup = new PopupOptions(menu);
+            PopupOptions popup = new PopupOptions(menuRepository, menu);
             popup.orderListEvent += (s, e) =>
             {
-                orderList?.Invoke(this, e);
+                orderListEvent?.Invoke(this, e);
             };
             DialogResult res = popup.ShowDialog(this);
 
@@ -72,20 +78,31 @@ namespace OrderingSystem.KioskApplication.Cards
         private void displayMenu()
         {
             menuName.Text = menu.MenuName;
-            price.Text = (menu.MenuDetailList[0].Price - (menu.MenuDetailList[0].Price * menu.MenuDetailList[0].DiscountRate)).ToString("C", new CultureInfo("en-PH"));
-            if (menu.MenuDetailList[0].DiscountRate != 0.00)
+            price.Text = menu.Price.ToString("C", new CultureInfo("en-PH"));
+            if (menu.DiscountRate != 0.00)
             {
                 off.Visible = true;
-                off.Text = (menu.MenuDetailList[0].DiscountRate * 100).ToString("0") + "%";
+                off.Text = (menu.DiscountRate * 100).ToString() + "%";
+                stick.Visible = true;
+                newPrice.Visible = true;
+                newPrice.Text = menu.GetDiscountedPrice().ToString("C", new CultureInfo("en-PH"));
             }
             else
             {
-                off.Visible = true;
+                stick.Visible = false;
+                newPrice.Visible = false;
+                off.Visible = false;
             }
+            image.Image = menu.Image;
             description.Text = menu.MenuDescription;
             menuName.ForeColor = Color.Black;
             price.ForeColor = Color.Black;
             description.ForeColor = Color.Black;
+        }
+
+        private void price_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

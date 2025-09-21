@@ -1,33 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
 using Guna.UI2.WinForms;
 using OrderingSystem.KioskApplication.Components;
-using OrderingSystem.Repository.Menus;
-using Menu = OrderingSystem.Model.Menu;
+using OrderingSystem.Model;
 
 namespace OrderingSystem.KioskApplication
 {
     public partial class FrequentlyOrderedLayout : Guna2Panel
     {
-        private IMenuRepository menuRepository;
-        private Menu menu;
-        private List<Menu> checkList;
-        public FrequentlyOrderedLayout(IMenuRepository menuRepository, Menu menu)
+
+        private List<MenuDetailModel> checkList;
+        public FrequentlyOrderedLayout(List<MenuDetailModel> menus)
         {
             InitializeComponent();
-            checkList = new List<Menu>();
-            this.menuRepository = menuRepository;
-            this.menu = menu;
-            HandleCreated += async (s, e) => { await asyncFunction(); };
+            checkList = new List<MenuDetailModel>();
 
             BorderRadius = 8;
             BorderColor = Color.LightGray;
             BorderThickness = 1;
             FillColor = Color.FromArgb(244, 244, 244);
             BackColor = Color.Transparent;
+
+            displayFrequentlyOrdered(menus);
         }
-        private void displayFOT(List<Menu> menu)
+        private void displayFrequentlyOrdered(List<MenuDetailModel> menu)
         {
             int y = 30;
 
@@ -45,13 +41,7 @@ namespace OrderingSystem.KioskApplication
 
         }
 
-        private async Task asyncFunction()
-        {
-            List<Menu> menus = await menuRepository.getFrequentlyOrderedTogether(menu);
-            displayFOT(menus);
-        }
-
-        public List<Menu> getFrequentlyOrderList()
+        public List<MenuDetailModel> getFrequentlyOrderList()
         {
             return checkList;
         }

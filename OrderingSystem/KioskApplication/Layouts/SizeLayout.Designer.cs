@@ -28,23 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.title = new System.Windows.Forms.Label();
+            this.subtitle = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.titleOption = new System.Windows.Forms.Label();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.menuName = new System.Windows.Forms.Label();
             this.guna2Panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // title
+            // subtitle
             // 
-            this.title.AutoSize = true;
-            this.title.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.title.Location = new System.Drawing.Point(57, 51);
-            this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(136, 13);
-            this.title.TabIndex = 8;
-            this.title.Text = "Select Size of your choice";
+            this.subtitle.AutoSize = true;
+            this.subtitle.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.subtitle.Location = new System.Drawing.Point(57, 51);
+            this.subtitle.Name = "subtitle";
+            this.subtitle.Size = new System.Drawing.Size(136, 13);
+            this.subtitle.TabIndex = 8;
+            this.subtitle.Text = "Select Size of your choice";
             // 
             // label2
             // 
@@ -92,15 +93,26 @@
             this.label1.Text = "Required";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // SizeCard
+            // menuName
+            // 
+            this.menuName.AutoSize = true;
+            this.menuName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuName.Location = new System.Drawing.Point(137, 21);
+            this.menuName.Name = "menuName";
+            this.menuName.Size = new System.Drawing.Size(43, 17);
+            this.menuName.TabIndex = 14;
+            this.menuName.Text = "label3";
+            // 
+            // SizeLayout
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
             this.ClientSize = new System.Drawing.Size(639, 141);
-            this.Controls.Add(this.title);
+            this.Controls.Add(this.menuName);
+            this.Controls.Add(this.subtitle);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.titleOption);
             this.Controls.Add(this.guna2Panel1);
-            this.Name = "SizeCard";
+            this.Name = "SizeLayout";
             this.Text = "SizeCard";
             this.guna2Panel1.ResumeLayout(false);
             this.guna2Panel1.PerformLayout();
@@ -111,10 +123,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Label title;
+        private System.Windows.Forms.Label subtitle;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label titleOption;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label menuName;
     }
 }

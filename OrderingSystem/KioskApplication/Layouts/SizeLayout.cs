@@ -2,24 +2,21 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Guna.UI2.WinForms;
-using OrderingSystem.Builder;
 using OrderingSystem.Model;
-using Menu = OrderingSystem.Model.Menu;
 
 namespace OrderingSystem.KioskApplication.Components
 {
     public partial class SizeLayout : Guna2Panel
     {
-        public event EventHandler<Menu> SizeSelected;
-        private List<MenuDetail> menuDetails;
-        private List<RadioSize> radioSamples;
-        private Menu menu;
-        public SizeLayout(Menu menu, List<MenuDetail> menuDetails)
+        public event EventHandler<MenuDetailModel> SizeSelected;
+        private List<MenuDetailModel> menuDetails;
+        private List<MyRadioButton> radioSamples;
+        private MenuDetailModel selectedFlavor;
+        public SizeLayout(MenuDetailModel selectedFlavor, List<MenuDetailModel> menuDetails)
         {
             InitializeComponent();
-            this.menu = menu;
+            this.selectedFlavor = selectedFlavor;
             this.menuDetails = menuDetails;
-
             BorderRadius = 8;
             BorderColor = Color.LightGray;
             BorderThickness = 1;
@@ -31,18 +28,36 @@ namespace OrderingSystem.KioskApplication.Components
 
 
 
-        private void displaySizes()
+        public void displaySizes()
         {
             int y = 40;
             bool isFirst = true;
-            radioSamples = new List<RadioSize>();
+            radioSamples = new List<MyRadioButton>();
             foreach (var m in menuDetails)
             {
-                double p = m.getDiscountedPrice() - menuDetails[0].getDiscountedPrice();
-                string priceText = p.ToString("N2");
-                string displayPrice = isFirst ? "Free" : priceText;
-
-                RadioSize rs = new RadioSize(m.SizeName, displayPrice, m);
+                double p = 0;
+                string priceText = "";
+                string displayPrice = "";
+                if (selectedFlavor != null)
+                {
+                    if (selectedFlavor.Menudetail_id == m.Menudetail_id)
+                    {
+                        displayPrice = "Free";
+                    }
+                    else
+                    {
+                        p = m.GetDiscountedPrice() - menuDetails[0].GetDiscountedPrice();
+                        priceText = p.ToString("N2");
+                        displayPrice = isFirst && m.GetDiscountedPrice() == menuDetails[0].GetDiscountedPrice() ? "Free" : priceText;
+                    }
+                }
+                else
+                {
+                    p = m.GetDiscountedPrice() - menuDetails[0].GetDiscountedPrice();
+                    priceText = p.ToString("N2");
+                    displayPrice = isFirst && m.GetDiscountedPrice() == menuDetails[0].GetDiscountedPrice() ? "Free" : priceText;
+                }
+                MyRadioButton rs = new MyRadioButton(m.SizeName, displayPrice, m);
                 rs.Location = new Point(50, titleOption.Bottom + y);
                 rs.RadioCheckedChanged += (s, e) =>
                 {
@@ -54,9 +69,7 @@ namespace OrderingSystem.KioskApplication.Components
                             r.Radio().Checked = false;
                         }
                     }
-                    var selected = new PurchaseBuilder().Build(menu, e);
-                    SizeSelected?.Invoke(this, selected);
-
+                    SizeSelected?.Invoke(this, m);
                 };
                 Controls.Add(rs);
                 radioSamples.Add(rs);
@@ -67,13 +80,35 @@ namespace OrderingSystem.KioskApplication.Components
 
         }
 
+        public void setTitleOption(string text, string menu)
+        {
+            titleOption.Text = text;
+            menuName.Text = menu;
+        }
+
+        public void setSubTitle(string text)
+        {
+            subtitle.Text = text;
+        }
+
         public void defaultSelection()
         {
             if (menuDetails.Count > 0 && radioSamples.Count > 0)
             {
-                radioSamples[0].Radio().Checked = true;
-                var selected = new PurchaseBuilder().Build(menu, menuDetails[0]);
-                SizeSelected?.Invoke(this, selected);
+                int x = 0;
+                foreach (var i in menuDetails)
+                {
+                    if (i.MaxOrder >= 0)
+                    {
+                        radioSamples[x].Radio().Checked = true;
+                        SizeSelected?.Invoke(this, menuDetails[x]);
+                    }
+                    else
+                    {
+                        x++;
+                        SizeSelected?.Invoke(this, null);
+                    }
+                }
             }
         }
     }

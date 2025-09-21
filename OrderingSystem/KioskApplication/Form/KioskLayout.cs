@@ -4,12 +4,15 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
+using OrderingSystem.CashierApp.Forms;
+using OrderingSystem.KioskApplication;
 using OrderingSystem.KioskApplication.Cards;
 using OrderingSystem.KioskApplication.Services;
 using OrderingSystem.Model;
 using OrderingSystem.Repository;
+using OrderingSystem.Repository.Coupon;
 using OrderingSystem.Repository.Menus;
-using Menu = OrderingSystem.Model.Menu;
+using OrderingSystem.Repository.Order;
 
 namespace OrderingSystem
 {
@@ -20,65 +23,143 @@ namespace OrderingSystem
         private ICategoryRepository categoryRepository;
         private Guna2Button lastActiveButton;
         private CartServices cartServices;
+        private CouponModel couponSelected;
         private bool isShowing = false;
+        private List<MenuDetailModel> orderList;
         private int x;
         public KioskLayout()
         {
             InitializeComponent();
             categoryRepository = new CategoryRepository();
-            menuRepository = new MenuRepository();
-            cartServices = new CartServices(menuRepository, flowCart);
+            orderList = new List<MenuDetailModel>();
+            menuRepository = new MenuRepository(orderList);
+            cartServices = new CartServices(menuRepository, flowCart, orderList);
             cartServices.quantityChanged += displayTotal;
+        }
+
+        private async void KioskLayout_Load(object sender, System.EventArgs e)
+        {
+            await fetchDataMenu();
+            await fetchDataCategory();
+        }
+        private async Task fetchDataMenu()
+        {
+            try
+            {
+                List<MenuDetailModel> menuList = await menuRepository.getMenu();
+                displayMenu(menuList);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Internal Server Error.");
+            }
+        }
+        private async Task fetchDataCategory()
+        {
+            try
+            {
+                List<CategoryModel> catList = await categoryRepository.getCategories();
+                displayCategories(catList);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Internal Server Error.");
+            }
         }
 
         private void displayTotal(object sender, EventArgs e)
         {
             subtotal.Text = cartServices.calculateSubtotal().ToString("N2");
             vat.Text = cartServices.calculateVat().ToString("N2");
-            //cartServices.calculateCoupon();
+            coupon.Text = cartServices.calculateCoupon(couponSelected).ToString("N2");
             total.Text = cartServices.calculateTotalAmount().ToString("N2");
+            count.Text = orderList.Count.ToString();
+            count.ForeColor = orderList.Count > 0 ? Color.IndianRed : Color.White;
         }
 
-        private void displayMenu(List<Menu> menuList)
+        private void displayMenu(List<MenuDetailModel> menuList)
         {
             foreach (var m in menuList)
             {
-                MenuCard card = new MenuCard(m);
+                MenuCard card = new MenuCard(menuRepository, m);
                 card.Margin = new Padding(12, 10, 12, 10);
-                card.orderList += (s, e) =>
+                card.orderListEvent += (s, e) =>
                 {
-                    cartServices.addMenuToCart(e);
-                    displayTotal(this, EventArgs.Empty);
+                    try
+                    {
+                        cartServices.addMenuToCart(e);
+                        displayTotal(this, EventArgs.Empty);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 };
+                card.Visible = false;
                 flowMenu.Controls.Add(card);
-
             }
         }
-        private void displayCategories(List<Category> catList)
+
+
+        private void displayCategories(List<CategoryModel> catList)
         {
+            Guna2Button b1 = new Guna2Button();
+            b1.Text = "Off Discount";
+            //b1.FillColor = Color.FromArgb(238, 238, 238);
+            b1.FillColor = Color.Transparent;
+            b1.BackColor = Color.Transparent;
+            b1.ForeColor = Color.FromArgb(34, 34, 34);
+            b1.HoverState.FillColor = Color.FromArgb(238, 238, 238);
+            b1.Click += buttonClicked;
+            b1.TextOffset = new Point(15, 0);
+            b1.Tag = 0;
+            buttonClicked(b1, EventArgs.Empty);
+            b1.Size = new Size(183, 43);
+            b1.Margin = new Padding(0, 0, 102, 0);
+            b1.TextAlign = HorizontalAlignment.Left;
+            flowCat.Controls.Add(b1);
             foreach (var c in catList)
             {
                 Guna2Button b = new Guna2Button();
                 b.Text = c.Category_name;
-                b.FillColor = Color.FromArgb(238, 238, 238);
+                b.FillColor = Color.Transparent;
+                //b.FillColor = Color.FromArgb(238, 238, 238);
                 b.BackColor = Color.Transparent;
+                b.TextOffset = new Point(15, 0);
                 b.ForeColor = Color.FromArgb(34, 34, 34);
+                b.TextAlign = HorizontalAlignment.Left;
                 b.HoverState.FillColor = Color.FromArgb(238, 238, 238);
                 b.Click += buttonClicked;
                 b.Tag = c.Category_id;
-                b.Size = new Size(100, 46);
-                b.Margin = new Padding(12, 0, 12, 0);
+                b.Size = new Size(183, 43);
+                b.Margin = new Padding(0, 0, 0, 0);
                 flowCat.Controls.Add(b);
             }
         }
         private void buttonClicked(object sender, EventArgs x)
         {
             Guna2Button b = (Guna2Button)sender;
+            int id = (int)b.Tag;
             if (lastActiveButton != null && b != lastActiveButton)
             {
                 lastActiveButton.Paint -= bottomBorder;
                 lastActiveButton.Invalidate();
                 lastActiveButton.ForeColor = Color.FromArgb(34, 34, 34);
+            }
+            foreach (Control c in flowMenu.Controls)
+            {
+                if (c is MenuCard r)
+
+                    if (id == 0 && r.Menu.DiscountRate > 0.00)
+                    {
+                        c.Visible = true;
+                    }
+                    else
+                    {
+                        c.Visible = r.Menu.MenuCategory_id == id;
+                    }
+            }
+            {
 
             }
             b.ForeColor = Color.DarkRed;
@@ -89,23 +170,13 @@ namespace OrderingSystem
         private void bottomBorder(object sender, PaintEventArgs e)
         {
             Control btn = (sender) as Control;
-            using (Pen p = new Pen(Color.DarkRed, 3))
+            using (Pen p = new Pen(Color.DarkRed, 2))
             {
-                e.Graphics.DrawLine(p, 0, btn.Height - 5, btn.Width, btn.Height - 5);
+                e.Graphics.DrawLine(p, 0, btn.Height - 2, btn.Width, btn.Height - 2);
+                //e.Graphics.DrawLine(p, 0, 3, btn.Width, 3);
             }
         }
-        private async void KioskLayout_Load(object sender, System.EventArgs e)
-        {
-            await runAsyncFunction();
-        }
-        private async Task runAsyncFunction()
-        {
-            List<Category> catList = await categoryRepository.getCategories();
-            displayCategories(catList);
 
-            List<Menu> menuList = await menuRepository.getMenu();
-            displayMenu(menuList);
-        }
         private void KioskLayout_SizeChanged(object sender, EventArgs e)
         {
             x = cartPanel.Location.X;
@@ -140,21 +211,49 @@ namespace OrderingSystem
                 }
             }
         }
-        private void guna2Button1_Click(object sender, EventArgs e)
+
+
+
+
+        private void guna2Button5_Click(object sender, EventArgs eb)
         {
-            t.Start();
+            ICouponRepository couponRepository = new CouponRepository();
+            CouponFrm c = new CouponFrm(couponRepository);
+            c.CouponSelected += (s, e) => couponSelected = e;
+            DialogResult rs = c.ShowDialog(this);
+            if (DialogResult.OK == rs)
+            {
+                displayTotal(this, EventArgs.Empty);
+            }
         }
 
-        private void guna2Button3_Click(object sender, EventArgs e)
+        private void guna2Button3_Click_1(object sender, EventArgs e)
         {
-            Environment.Exit(0);
-            //AddMenu add = new AddMenu();
-            //add.Show();
+            CashierLayout m = new CashierLayout();
+            m.Show();
         }
 
-        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
+        private async void guna2Button4_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (orderList == null || orderList.Count == 0) return;
 
+                IOrderRepository orderRepository = new OrderRepository();
+                OrderServices os = new OrderServices(orderRepository);
+                OrderModel or = OrderModel.Builder()
+                    .SetOrderList(orderList)
+                    .SetCoupon(couponSelected)
+                    .Build();
+
+                bool result = await os.confirmOrder(or);
+                if (result) MessageBox.Show("Order Completed.");
+                else MessageBox.Show("Order Failed.");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Internal Server Error.");
+            }
         }
     }
 }

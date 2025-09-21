@@ -1,45 +1,53 @@
 ﻿using System;
 using System.Drawing;
 using Guna.UI2.WinForms;
-using OrderingSystem.Builder;
-using Menu = OrderingSystem.Model.Menu;
+using OrderingSystem.Model;
 namespace OrderingSystem.KioskApplication.Components
 {
     public partial class FrequentlyOrderedCard : Guna2Panel
     {
-        private Menu menu;
-        public event EventHandler<Menu> checkedMenu;
-        public event EventHandler<Menu> unCheckedMenu;
-        private Menu selectedMenu;
-        public FrequentlyOrderedCard(Menu menu)
+        private MenuDetailModel menu;
+        public event EventHandler<MenuDetailModel> checkedMenu;
+        public event EventHandler<MenuDetailModel> unCheckedMenu;
+        private MenuDetailModel selectedMenu;
+        public FrequentlyOrderedCard(MenuDetailModel menu)
         {
             InitializeComponent();
             this.menu = menu;
             cardLayout();
             displayMenu();
+            cardChecked();
         }
 
-        private void displayMenu()
+        private void cardChecked()
         {
-            menuName.Text = menu.MenuName;
-            size.Text = menu.MenuDetail.SizeName;
-            price.Text = "₱       + " + menu.MenuDetail.getDiscountedPrice().ToString("N2");
             checkBox.Checked = false;
             checkBox.CheckedChanged += (s, e) =>
             {
                 if (checkBox.Checked)
                 {
                     BorderColor = Color.FromArgb(94, 148, 255);
-                    selectedMenu = new PurchaseBuilder().Build(menu, menu.MenuDetail);
+                    BorderColor = Color.DarkRed;
+                    BorderThickness = 3;
+                    selectedMenu = MenuDetailModel.BuildPurchaseMenu(menu);
                     checkedMenu.Invoke(this, selectedMenu);
                 }
                 else
                 {
                     BorderColor = Color.DarkGray;
+                    BorderThickness = 1;
                     unCheckedMenu.Invoke(this, selectedMenu);
                     selectedMenu = null;
                 }
             };
+        }
+
+        private void displayMenu()
+        {
+            menuName.Text = menu.MenuName;
+            detail.Text = menu.SizeName;
+            price.Text = "₱       + " + menu.GetDiscountedPrice().ToString("N2");
+            image.Image = menu.Image;
         }
 
         private void cardLayout()
@@ -53,7 +61,7 @@ namespace OrderingSystem.KioskApplication.Components
 
         private void checkBoxChanged(object sender, EventArgs e)
         {
-            //selectedMenu = menu;
+            selectedMenu = menu;
         }
     }
 }

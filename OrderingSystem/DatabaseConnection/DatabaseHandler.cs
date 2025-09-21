@@ -45,7 +45,7 @@ namespace OrderingSystem.DatabaseConnection
 
                 while (conn.State == ConnectionState.Connecting)
                 {
-
+                    await Task.Delay(10);
                 }
 
 

@@ -29,42 +29,43 @@
         private void InitializeComponent()
         {
             this.menuName = new System.Windows.Forms.Label();
-            this.size = new System.Windows.Forms.Label();
-            this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.detail = new System.Windows.Forms.Label();
+            this.image = new Guna.UI2.WinForms.Guna2PictureBox();
             this.price = new System.Windows.Forms.Label();
             this.checkBox = new Guna.UI2.WinForms.Guna2CustomCheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.image)).BeginInit();
             this.SuspendLayout();
             // 
             // menuName
             // 
-            this.menuName.AutoSize = true;
-            this.menuName.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.menuName.Location = new System.Drawing.Point(135, 18);
+            this.menuName.AutoEllipsis = true;
+            this.menuName.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuName.Location = new System.Drawing.Point(135, 13);
             this.menuName.Name = "menuName";
-            this.menuName.Size = new System.Drawing.Size(51, 21);
+            this.menuName.Size = new System.Drawing.Size(422, 34);
             this.menuName.TabIndex = 0;
             this.menuName.Text = "label1";
             // 
-            // size
+            // detail
             // 
-            this.size.AutoSize = true;
-            this.size.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.size.Location = new System.Drawing.Point(179, 47);
-            this.size.Name = "size";
-            this.size.Size = new System.Drawing.Size(43, 17);
-            this.size.TabIndex = 1;
-            this.size.Text = "label1";
+            this.detail.AutoSize = true;
+            this.detail.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.detail.Location = new System.Drawing.Point(189, 47);
+            this.detail.Name = "detail";
+            this.detail.Size = new System.Drawing.Size(43, 17);
+            this.detail.TabIndex = 1;
+            this.detail.Text = "label1";
             // 
-            // guna2PictureBox1
+            // image
             // 
-            this.guna2PictureBox1.BorderRadius = 3;
-            this.guna2PictureBox1.ImageRotate = 0F;
-            this.guna2PictureBox1.Location = new System.Drawing.Point(53, 13);
-            this.guna2PictureBox1.Name = "guna2PictureBox1";
-            this.guna2PictureBox1.Size = new System.Drawing.Size(76, 76);
-            this.guna2PictureBox1.TabIndex = 2;
-            this.guna2PictureBox1.TabStop = false;
+            this.image.BorderRadius = 3;
+            this.image.ImageRotate = 0F;
+            this.image.Location = new System.Drawing.Point(53, 13);
+            this.image.Name = "image";
+            this.image.Size = new System.Drawing.Size(76, 76);
+            this.image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.image.TabIndex = 2;
+            this.image.TabStop = false;
             // 
             // price
             // 
@@ -100,12 +101,12 @@
             this.ClientSize = new System.Drawing.Size(598, 101);
             this.Controls.Add(this.checkBox);
             this.Controls.Add(this.price);
-            this.Controls.Add(this.guna2PictureBox1);
-            this.Controls.Add(this.size);
+            this.Controls.Add(this.image);
+            this.Controls.Add(this.detail);
             this.Controls.Add(this.menuName);
             this.Name = "FrequentlyOrderedCard";
             this.Text = "FotCard";
-            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.image)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,8 +115,8 @@
         #endregion
 
         private System.Windows.Forms.Label menuName;
-        private System.Windows.Forms.Label size;
-        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox1;
+        private System.Windows.Forms.Label detail;
+        private Guna.UI2.WinForms.Guna2PictureBox image;
         private System.Windows.Forms.Label price;
         private Guna.UI2.WinForms.Guna2CustomCheckBox checkBox;
     }

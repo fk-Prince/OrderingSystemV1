@@ -87,19 +87,90 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddMenu.cs">
+    <Compile Include="CashierApp\Forms\Ingredient\AddIngredient.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddMenu.Designer.cs">
-      <DependentUpon>AddMenu.cs</DependentUpon>
+    <Compile Include="CashierApp\Forms\Ingredient\AddIngredient.Designer.cs">
+      <DependentUpon>AddIngredient.cs</DependentUpon>
     </Compile>
-    <Compile Include="Builder\PurchaseBuilder.cs" />
+    <Compile Include="CashierApp\Forms\Ingredient\DeductIngredient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Ingredient\DeductIngredient.Designer.cs">
+      <DependentUpon>DeductIngredient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Ingredient\RestockIngredient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Ingredient\RestockIngredient.Designer.cs">
+      <DependentUpon>RestockIngredient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Order\OrderDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Order\OrderDialog.Designer.cs">
+      <DependentUpon>OrderDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Layout\CashierLayout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Layout\CashierLayout.Designer.cs">
+      <DependentUpon>CashierLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Ingredient\IngredientFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Ingredient\IngredientFrm.Designer.cs">
+      <DependentUpon>IngredientFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Inventory\InventoryFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Inventory\InventoryFrm.Designer.cs">
+      <DependentUpon>InventoryFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Menu\MenuFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Menu\MenuFrm.Designer.cs">
+      <DependentUpon>MenuFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Order\OrderFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Order\OrderFrm.Designer.cs">
+      <DependentUpon>OrderFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Utilities\UtilitiesFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Utilities\UtilitiesFrm.Designer.cs">
+      <DependentUpon>UtilitiesFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseConnection\DatabaseHandler.cs" />
+    <Compile Include="Exceptions\MaxOrder.cs" />
+    <Compile Include="Exceptions\NoSelectedMenu.cs" />
+    <Compile Include="Exceptions\OrderInvalid.cs" />
+    <Compile Include="Exceptions\OrderNotFound.cs" />
+    <Compile Include="Exceptions\OutOfOrder.cs" />
+    <Compile Include="util\ImageHelper.cs" />
     <Compile Include="KioskApplication\Components\CartCard.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="KioskApplication\Components\CartCard.Designer.cs">
       <DependentUpon>CartCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KioskApplication\Form\CouponFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KioskApplication\Form\CouponFrm.Designer.cs">
+      <DependentUpon>CouponFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KioskApplication\Layouts\FlavorLayout.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="KioskApplication\Layouts\FlavorLayout.Designer.cs">
+      <DependentUpon>FlavorLayout.cs</DependentUpon>
     </Compile>
     <Compile Include="KioskApplication\Components\FrequentlyOrderedCard.cs">
       <SubType>Component</SubType>
@@ -113,17 +184,23 @@
     <Compile Include="KioskApplication\Components\IngredientCheckbox.Designer.cs">
       <DependentUpon>IngredientCheckbox.cs</DependentUpon>
     </Compile>
+    <Compile Include="KioskApplication\Layouts\PackageLayout.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="KioskApplication\Layouts\PackageLayout.Designer.cs">
+      <DependentUpon>PackageLayout.cs</DependentUpon>
+    </Compile>
     <Compile Include="KioskApplication\Layouts\RemoveableIngredientLayout.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="KioskApplication\Layouts\RemoveableIngredientLayout.Designer.cs">
       <DependentUpon>RemoveableIngredientLayout.cs</DependentUpon>
     </Compile>
-    <Compile Include="KioskApplication\Components\RadioSize.cs">
+    <Compile Include="KioskApplication\Components\MyRadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="KioskApplication\Components\RadioSize.Designer.cs">
-      <DependentUpon>RadioSize.cs</DependentUpon>
+    <Compile Include="KioskApplication\Components\MyRadioButton.Designer.cs">
+      <DependentUpon>MyRadioButton.cs</DependentUpon>
     </Compile>
     <Compile Include="KioskApplication\Components\MenuCard.cs">
       <SubType>Component</SubType>
@@ -155,22 +232,62 @@
     <Compile Include="KioskApplication\Form\PopupOptions.Designer.cs">
       <DependentUpon>PopupOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="KioskApplication\Services\CartServices.cs" />
-    <Compile Include="Model\Branches.cs" />
-    <Compile Include="Model\Category.cs" />
-    <Compile Include="Model\Ingredient.cs" />
-    <Compile Include="Model\Menu.cs" />
-    <Compile Include="Model\MenuDetail.cs" />
+    <Compile Include="KioskApplication\Options\FrequentlyOrderedOption.cs" />
+    <Compile Include="KioskApplication\Interface\IOutOfOrder.cs" />
+    <Compile Include="KioskApplication\Interface\ISelectedFrequentlyOrdered.cs" />
+    <Compile Include="KioskApplication\Options\RegularOption.cs" />
+    <Compile Include="Services\CartServices.cs" />
+    <Compile Include="KioskApplication\Interface\IMenuOptions.cs" />
+    <Compile Include="Services\OrderServices.cs" />
+    <Compile Include="KioskApplication\Options\PackageOption.cs" />
+    <Compile Include="Models\CouponModel.cs" />
+    <Compile Include="Models\MenuPackageModel.cs" />
+    <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\IngredientModel.cs" />
+    <Compile Include="Models\MenuModel.cs" />
+    <Compile Include="Models\MenuDetailModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\Category\CategoryRepository.cs" />
-    <Compile Include="Repository\Category\ICategoryRepository.cs" />
-    <Compile Include="Repository\Ingredients\IIngredientRepository.cs" />
-    <Compile Include="Repository\Ingredients\IngredientRepository.cs" />
-    <Compile Include="Repository\Menus\IMenuRepository.cs" />
-    <Compile Include="Repository\Menus\MenuRepository.cs" />
-    <EmbeddedResource Include="AddMenu.resx">
-      <DependentUpon>AddMenu.cs</DependentUpon>
+    <Compile Include="Repo\Categories\CategoryRepository.cs" />
+    <Compile Include="Repo\Categories\ICategoryRepository.cs" />
+    <Compile Include="Repo\Coupons\CouponRepository.cs" />
+    <Compile Include="Repo\Coupons\ICouponRepository.cs" />
+    <Compile Include="Repo\Ingredients\IIngredientRepository.cs" />
+    <Compile Include="Repo\Ingredients\IngredientRepository.cs" />
+    <Compile Include="Repo\Menus\IMenuRepository.cs" />
+    <Compile Include="Repo\Menus\MenuRepository.cs" />
+    <Compile Include="Repo\Orders\IOrderRepository.cs" />
+    <Compile Include="Repo\Orders\OrderRepository.cs" />
+    <EmbeddedResource Include="CashierApp\Forms\Ingredient\AddIngredient.resx">
+      <DependentUpon>AddIngredient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Ingredient\DeductIngredient.resx">
+      <DependentUpon>DeductIngredient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Ingredient\RestockIngredient.resx">
+      <DependentUpon>RestockIngredient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Order\OrderDialog.resx">
+      <DependentUpon>OrderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Layout\CashierLayout.resx">
+      <DependentUpon>CashierLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Ingredient\IngredientFrm.resx">
+      <DependentUpon>IngredientFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Inventory\InventoryFrm.resx">
+      <DependentUpon>InventoryFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Menu\MenuFrm.resx">
+      <DependentUpon>MenuFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Order\OrderFrm.resx">
+      <DependentUpon>OrderFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Utilities\UtilitiesFrm.resx">
+      <DependentUpon>UtilitiesFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KioskApplication\Components\CartCard.resx">
       <DependentUpon>CartCard.cs</DependentUpon>
@@ -181,11 +298,20 @@
     <EmbeddedResource Include="KioskApplication\Components\IngredientCheckbox.resx">
       <DependentUpon>IngredientCheckbox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KioskApplication\Form\CouponFrm.resx">
+      <DependentUpon>CouponFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KioskApplication\Layouts\FlavorLayout.resx">
+      <DependentUpon>FlavorLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KioskApplication\Layouts\PackageLayout.resx">
+      <DependentUpon>PackageLayout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="KioskApplication\Layouts\RemoveableIngredientLayout.resx">
       <DependentUpon>RemoveableIngredientLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KioskApplication\Components\RadioSize.resx">
-      <DependentUpon>RadioSize.cs</DependentUpon>
+    <EmbeddedResource Include="KioskApplication\Components\MyRadioButton.resx">
+      <DependentUpon>MyRadioButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KioskApplication\Components\MenuCard.resx">
       <DependentUpon>MenuCard.cs</DependentUpon>
@@ -210,6 +336,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -225,6 +352,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\placeholder.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\basket.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gift.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exclamation_mark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exit.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

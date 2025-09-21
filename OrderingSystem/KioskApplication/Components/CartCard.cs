@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using Guna.UI2.WinForms;
-using Menu = OrderingSystem.Model.Menu;
+using OrderingSystem.Model;
 namespace OrderingSystem.KioskApplication.Components
 {
     public partial class CartCard : Guna2Panel
     {
-        private Menu menu;
-        public event EventHandler<Menu> addQuantityEvent;
-        public event EventHandler<Menu> deductQuantityEvent;
-        public CartCard(Menu menu)
+        private MenuDetailModel menu;
+        public event EventHandler<MenuDetailModel> addQuantityEvent;
+        public event EventHandler<MenuDetailModel> deductQuantityEvent;
+        public CartCard(MenuDetailModel menu)
         {
             InitializeComponent();
             this.menu = menu;
@@ -29,22 +29,37 @@ namespace OrderingSystem.KioskApplication.Components
         public void displayPurchasedMenu()
         {
             menuName.Text = menu.MenuName;
-            price.Text = menu.MenuDetail.getDiscountedPrice().ToString("N2");
-            sizeName.Text = menu.MenuDetail.SizeName;
-            qty.Text = menu.MenuDetail.PurchaseQty.ToString();
-            total.Text = (menu.MenuDetail.getDiscountedPrice() * menu.MenuDetail.PurchaseQty).ToString("N2");
+            price.Text = menu.GetDiscountedPrice().ToString("N2");
+
+            string text = "";
+
+            if (menu is MenuPackageModel p) text = "Package";
+            else if (menu.SizeName == menu.FlavorName) text = "Regular";
+            else text = "Flavor: " + menu.FlavorName + "   -   Size:" + menu.SizeName;
+            image.Image = menu.Image;
+            detail.Text = text;
+            qty.Text = menu.PurchaseQty.ToString();
+            bb.Text = qty.Text;
+            total.Text = (menu.GetDiscountedPrice() * menu.PurchaseQty).ToString("N2");
         }
 
         private void addQuantity(object sender, System.EventArgs e)
         {
             addQuantityEvent.Invoke(this, menu);
-            displayPurchasedMenu();
+            //displayPurchasedMenu();
         }
 
         private void deductQuantity(object sender, System.EventArgs e)
         {
             deductQuantityEvent.Invoke(this, menu);
-            displayPurchasedMenu();
+            //displayPurchasedMenu();
+        }
+
+
+
+        private void CartCard_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
