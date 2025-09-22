@@ -13,14 +13,14 @@ namespace OrderingSystem.KioskApplication
     public partial class PopupOptions : Form
     {
 
-        private IMenuRepository _menuRepository;
+        private IKioskMenuRepository _menuRepository;
         private IMenuOptions menuOptions;
 
         public event EventHandler<List<MenuDetailModel>> orderListEvent;
         private List<MenuDetailModel> orderList;
 
 
-        public PopupOptions(IMenuRepository _menuRepository, MenuDetailModel menu)
+        public PopupOptions(IKioskMenuRepository _menuRepository, MenuDetailModel menu)
         {
             InitializeComponent();
             this._menuRepository = _menuRepository;

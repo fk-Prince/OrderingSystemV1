@@ -13,13 +13,13 @@ namespace OrderingSystem.KioskApplication.Cards
 
     {
         private MenuDetailModel menu;
-        private IMenuRepository menuRepository;
+        private IKioskMenuRepository menuRepository;
         public event EventHandler<List<MenuDetailModel>> orderListEvent;
 
 
         public MenuDetailModel Menu => menu;
 
-        public MenuCard(IMenuRepository menuRepository, MenuDetailModel menu)
+        public MenuCard(IKioskMenuRepository menuRepository, MenuDetailModel menu)
         {
             InitializeComponent();
             this.menuRepository = menuRepository;

@@ -11,12 +11,12 @@ namespace OrderingSystem.KioskApplication.Services
 {
     public class CartServices
     {
-        private IMenuRepository menuRepository;
+        private IKioskMenuRepository menuRepository;
         private FlowLayoutPanel flowCart;
         private List<MenuDetailModel> orderList;
         public event EventHandler quantityChanged;
         private CouponModel coupon;
-        public CartServices(IMenuRepository menuRepository, FlowLayoutPanel flowCart, List<MenuDetailModel> orderList)
+        public CartServices(IKioskMenuRepository menuRepository, FlowLayoutPanel flowCart, List<MenuDetailModel> orderList)
         {
             this.menuRepository = menuRepository;
             this.flowCart = flowCart;

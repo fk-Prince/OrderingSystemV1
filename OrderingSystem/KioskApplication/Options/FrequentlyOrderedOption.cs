@@ -11,8 +11,8 @@ namespace OrderingSystem.KioskApplication.Options
     {
         private FrequentlyOrderedLayout fot;
         private FlowLayoutPanel flowPanel;
-        private IMenuRepository menuRepository;
-        public FrequentlyOrderedOption(IMenuRepository menuRepository, FlowLayoutPanel flowPanel)
+        private IKioskMenuRepository menuRepository;
+        public FrequentlyOrderedOption(IKioskMenuRepository menuRepository, FlowLayoutPanel flowPanel)
         {
             this.flowPanel = flowPanel;
             this.menuRepository = menuRepository;

@@ -13,7 +13,7 @@ namespace OrderingSystem.KioskApplication.Services
 {
     public class PackageOption : IMenuOptions, ISelectedFrequentlyOrdered, IOutOfOrder
     {
-        private readonly IMenuRepository _menuRepository;
+        private readonly IKioskMenuRepository _menuRepository;
         private readonly List<PackageLayout> _orderListPackage;
         private FlowLayoutPanel flowPanel;
         private FrequentlyOrderedOption frequentlyOrderedOption;
@@ -21,7 +21,7 @@ namespace OrderingSystem.KioskApplication.Services
 
         public event EventHandler outOfOrder;
 
-        public PackageOption(IMenuRepository menuRepository, FlowLayoutPanel flowPanel)
+        public PackageOption(IKioskMenuRepository menuRepository, FlowLayoutPanel flowPanel)
         {
             _menuRepository = menuRepository;
             this.flowPanel = flowPanel;

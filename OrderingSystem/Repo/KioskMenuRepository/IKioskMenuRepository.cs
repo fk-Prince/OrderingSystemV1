@@ -5,7 +5,7 @@ using MenuModel = OrderingSystem.Model.MenuModel;
 
 namespace OrderingSystem.Repository.Menus
 {
-    public interface IMenuRepository
+    public interface IKioskMenuRepository
     {
 
         Task<List<MenuDetailModel>> getMenu();

@@ -8,5 +8,10 @@ namespace OrderingSystem.CashierApp.Forms
         {
             InitializeComponent();
         }
+
+        private void MenuFrm_Load(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }

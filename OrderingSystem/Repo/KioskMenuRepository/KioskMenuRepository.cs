@@ -11,10 +11,10 @@ using MenuModel = OrderingSystem.Model.MenuModel;
 
 namespace OrderingSystem.Repository.Menus
 {
-    public class MenuRepository : IMenuRepository
+    public class KioskMenuRepository : IKioskMenuRepository
     {
         private List<MenuDetailModel> orderList;
-        public MenuRepository(List<MenuDetailModel> orderList)
+        public KioskMenuRepository(List<MenuDetailModel> orderList)
         {
             this.orderList = orderList;
         }

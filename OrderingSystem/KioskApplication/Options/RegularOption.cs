@@ -12,7 +12,7 @@ namespace OrderingSystem.KioskApplication.Options
 {
     public class RegularOption : IMenuOptions, IOutOfOrder, ISelectedFrequentlyOrdered
     {
-        private IMenuRepository _menuRepository;
+        private IKioskMenuRepository _menuRepository;
         private string titleOption;
         private string subTitle;
         private SizeLayout sc;
@@ -23,7 +23,7 @@ namespace OrderingSystem.KioskApplication.Options
         private MenuDetailModel selectedSize;
         public event EventHandler outOfOrder;
 
-        public RegularOption(IMenuRepository menuRepository, FlowLayoutPanel flowPanel)
+        public RegularOption(IKioskMenuRepository menuRepository, FlowLayoutPanel flowPanel)
         {
             _menuRepository = menuRepository;
             this.flowPanel = flowPanel;

@@ -105,6 +105,12 @@
     <Compile Include="CashierApp\Forms\Ingredient\RestockIngredient.Designer.cs">
       <DependentUpon>RestockIngredient.cs</DependentUpon>
     </Compile>
+    <Compile Include="CashierApp\Forms\Menu\MenuCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Menu\MenuCard.Designer.cs">
+      <DependentUpon>MenuCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="CashierApp\Forms\Order\OrderDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,6 +159,8 @@
     <Compile Include="Exceptions\OrderInvalid.cs" />
     <Compile Include="Exceptions\OrderNotFound.cs" />
     <Compile Include="Exceptions\OutOfOrder.cs" />
+    <Compile Include="Repo\CashierMenuRepository\CashierMenuRepository.cs" />
+    <Compile Include="Repo\CashierMenuRepository\ICashierMenuRepository.cs" />
     <Compile Include="util\ImageHelper.cs" />
     <Compile Include="KioskApplication\Components\CartCard.cs">
       <SubType>Component</SubType>
@@ -255,8 +263,8 @@
     <Compile Include="Repo\Coupons\ICouponRepository.cs" />
     <Compile Include="Repo\Ingredients\IIngredientRepository.cs" />
     <Compile Include="Repo\Ingredients\IngredientRepository.cs" />
-    <Compile Include="Repo\Menus\IMenuRepository.cs" />
-    <Compile Include="Repo\Menus\MenuRepository.cs" />
+    <Compile Include="Repo\KioskMenuRepository\IKioskMenuRepository.cs" />
+    <Compile Include="Repo\KioskMenuRepository\KioskMenuRepository.cs" />
     <Compile Include="Repo\Orders\IOrderRepository.cs" />
     <Compile Include="Repo\Orders\OrderRepository.cs" />
     <EmbeddedResource Include="CashierApp\Forms\Ingredient\AddIngredient.resx">
@@ -267,6 +275,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CashierApp\Forms\Ingredient\RestockIngredient.resx">
       <DependentUpon>RestockIngredient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Menu\MenuCard.resx">
+      <DependentUpon>MenuCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CashierApp\Forms\Order\OrderDialog.resx">
       <DependentUpon>OrderDialog.cs</DependentUpon>
@@ -370,5 +381,6 @@
   <ItemGroup>
     <None Include="Resources\exit.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

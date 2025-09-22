@@ -19,7 +19,7 @@ namespace OrderingSystem
     public partial class KioskLayout : Form
     {
 
-        private IMenuRepository menuRepository;
+        private IKioskMenuRepository menuRepository;
         private ICategoryRepository categoryRepository;
         private Guna2Button lastActiveButton;
         private CartServices cartServices;
@@ -32,7 +32,7 @@ namespace OrderingSystem
             InitializeComponent();
             categoryRepository = new CategoryRepository();
             orderList = new List<MenuDetailModel>();
-            menuRepository = new MenuRepository(orderList);
+            menuRepository = new KioskMenuRepository(orderList);
             cartServices = new CartServices(menuRepository, flowCart, orderList);
             cartServices.quantityChanged += displayTotal;
         }

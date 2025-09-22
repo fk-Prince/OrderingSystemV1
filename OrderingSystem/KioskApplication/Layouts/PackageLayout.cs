@@ -15,7 +15,7 @@ namespace OrderingSystem.KioskApplication.Layouts
         private string titleOption;
         private string subTitle;
         private SizeLayout sc;
-        private IMenuRepository _menuRepository;
+        private IKioskMenuRepository _menuRepository;
         private MenuDetailModel menuDetail;
 
 
@@ -28,7 +28,7 @@ namespace OrderingSystem.KioskApplication.Layouts
 
         public MenuDetailModel SelectedMenuDetail => selectedMenu;
 
-        public PackageLayout(IMenuRepository menuRepository, MenuDetailModel menuDetail)
+        public PackageLayout(IKioskMenuRepository menuRepository, MenuDetailModel menuDetail)
         {
             InitializeComponent();
 
