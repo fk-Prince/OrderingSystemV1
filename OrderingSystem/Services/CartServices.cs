@@ -47,12 +47,12 @@ namespace OrderingSystem.KioskApplication.Services
             }
         }
 
-        private async void addQuantity(object sender, MenuDetailModel e)
+        private void addQuantity(object sender, MenuDetailModel e)
         {
             CartCard cc = sender as CartCard;
             var order = orderList.FirstOrDefault(o => o.Menudetail_id == e.Menudetail_id);
 
-            int b = await menuRepository.getMaxOrderRealTime(e.Menudetail_id, orderList);
+            int b = menuRepository.getMaxOrderRealTime(e.Menudetail_id, orderList);
             if (b <= 0)
             {
                 throw new MaxOrder("Unable to add more quantity.");

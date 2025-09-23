@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OrderingSystem.Exceptions;
 using OrderingSystem.KioskApplication.Layouts;
@@ -29,7 +28,7 @@ namespace OrderingSystem.KioskApplication.Services
             frequentlyOrderedOption = new FrequentlyOrderedOption(menuRepository, flowPanel);
         }
 
-        public async Task menuOptions(MenuDetailModel menu)
+        public void menuOptions(MenuDetailModel menu)
         {
             currentMenu = menu;
 
@@ -39,7 +38,7 @@ namespace OrderingSystem.KioskApplication.Services
                 return;
             }
 
-            List<MenuDetailModel> menuList = await _menuRepository.getMenuId(menu.Menu_id);
+            List<MenuDetailModel> menuList = _menuRepository.getMenuId(menu.Menu_id);
 
             foreach (var item in menuList)
             {
@@ -49,7 +48,7 @@ namespace OrderingSystem.KioskApplication.Services
                 _orderListPackage.Add(pakage);
             }
 
-            await frequentlyOrderedOption.diplsyFreqentlyOrdered(menu);
+            frequentlyOrderedOption.diplsyFreqentlyOrdered(menu);
         }
 
         public List<MenuDetailModel> getFrequentlyOrdered()
@@ -57,7 +56,7 @@ namespace OrderingSystem.KioskApplication.Services
             return frequentlyOrderedOption?.getFrequentlyOrdered();
         }
 
-        public async Task<List<MenuDetailModel>> confirmOrder()
+        public List<MenuDetailModel> confirmOrder()
         {
             if (_orderListPackage.Any(pg => pg.SelectedMenuDetail == null || pg.SelectedMenuDetail.MaxOrder <= 0))
             {
@@ -65,8 +64,8 @@ namespace OrderingSystem.KioskApplication.Services
             }
 
             var selectedMenus = _orderListPackage.Select(pg => pg.SelectedMenuDetail).ToList();
-            double newPrice = await _menuRepository.getNewPackagePrice(currentMenu.Menudetail_id, selectedMenus);
-            var baseMenu = await _menuRepository.getSelectedMenu(currentMenu.Menu_id, "", "");
+            double newPrice = _menuRepository.getNewPackagePrice(currentMenu.Menudetail_id, selectedMenus);
+            var baseMenu = _menuRepository.getSelectedMenu(currentMenu.Menu_id, "", "");
             var purchasePackage = MenuPackageModel.BuildPurchasePackage(baseMenu, selectedMenus, newPrice);
 
             return new List<MenuDetailModel> { purchasePackage };

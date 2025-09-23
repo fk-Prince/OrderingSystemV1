@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using MySqlConnector;
 using OrderingSystem.DatabaseConnection;
 using OrderingSystem.Model;
@@ -8,18 +7,18 @@ namespace OrderingSystem.Repo.CashierMenuRepository
 {
     public class CashierMenuRepository : ICashierMenuRepository
     {
-        public async Task<List<MenuDetailModel>> getMenu()
+        public List<MenuDetailModel> getMenu()
         {
             List<MenuDetailModel> list = new List<MenuDetailModel>();
             var db = DatabaseHandler.getInstance();
             try
             {
-                var con = await db.getConnection();
+                var con = db.getConnection();
                 using (var cmd = new MySqlCommand("SELECT * FROM v_retrieve_menu", con))
                 {
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             MenuDetailModel md = MenuDetailModel.Builder()
                                      .SetMenuID(reader.GetInt32("menu_id"))
@@ -40,7 +39,7 @@ namespace OrderingSystem.Repo.CashierMenuRepository
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             return list;
         }

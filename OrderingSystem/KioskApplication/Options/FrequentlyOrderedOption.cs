@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OrderingSystem.Model;
 using OrderingSystem.Repository.Menus;
@@ -18,11 +17,11 @@ namespace OrderingSystem.KioskApplication.Options
             this.menuRepository = menuRepository;
         }
 
-        public async Task diplsyFreqentlyOrdered(MenuDetailModel menus)
+        public void diplsyFreqentlyOrdered(MenuDetailModel menus)
         {
             try
             {
-                List<MenuDetailModel> md = await menuRepository.getFrequentlyOrderedTogether(menus);
+                List<MenuDetailModel> md = menuRepository.getFrequentlyOrderedTogether(menus);
                 if (flowPanel.Contains(fot))
                 {
                     flowPanel.Controls.SetChildIndex(fot, flowPanel.Controls.Count - 1);

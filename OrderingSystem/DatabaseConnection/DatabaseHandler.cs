@@ -31,27 +31,23 @@ namespace OrderingSystem.DatabaseConnection
             }
             return instance;
         }
-        public async Task<MySqlConnection> getConnection()
+        public MySqlConnection getConnection()
         {
-            await connectionSemaphore.WaitAsync().ConfigureAwait(false);
+
             try
             {
-                if (conn == null)
-                {
 
-                    conn = new MySqlConnection(getConnectionString());
-                }
-
+                conn = new MySqlConnection(getConnectionString());
 
                 while (conn.State == ConnectionState.Connecting)
                 {
-                    await Task.Delay(10);
+                    Task.Delay(10);
                 }
 
 
                 if (conn.State != ConnectionState.Open)
                 {
-                    await conn.OpenAsync();
+                    conn.Open();
                 }
 
             }
@@ -63,13 +59,13 @@ namespace OrderingSystem.DatabaseConnection
             return conn;
 
         }
-        public async Task closeConnection()
+        public void closeConnection()
         {
             if (conn != null && conn.State == ConnectionState.Open)
             {
-                await conn.CloseAsync();
+                conn.Close();
             }
-            connectionSemaphore.Release();
+
         }
         private string getConnectionString()
         {

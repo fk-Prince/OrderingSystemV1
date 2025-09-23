@@ -18,12 +18,12 @@ namespace OrderingSystem.CashierApp.Forms.Order
             InitializeComponent();
             this.orderServices = orderServices;
         }
-        private async void getOrderButton(object sender, EventArgs e)
+        private void getOrderButton(object sender, EventArgs e)
         {
             try
             {
                 string orderId = txt.Text.Trim();
-                om = await orderServices.getAllOrders(orderId);
+                om = orderServices.getAllOrders(orderId);
                 DialogResult = DialogResult.OK;
             }
             catch (Exception ex) when (ex is OrderInvalid || ex is OrderNotFound)

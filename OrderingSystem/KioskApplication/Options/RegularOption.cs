@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OrderingSystem.Exceptions;
 using OrderingSystem.KioskApplication.Components;
@@ -30,14 +29,14 @@ namespace OrderingSystem.KioskApplication.Options
 
             frequentlyOrderedOption = new FrequentlyOrderedOption(menuRepository, flowPanel);
         }
-        public async Task menuOptions(MenuDetailModel menu)
+        public void menuOptions(MenuDetailModel menu)
         {
             try
             {
-                if (!await _menuRepository.isMenuPackage(menu))
+                if (!_menuRepository.isMenuPackage(menu))
                 {
                     this.menu = menu;
-                    List<MenuDetailModel> menuFlavorList = await _menuRepository.getMenuDetailFlavor(menu);
+                    List<MenuDetailModel> menuFlavorList = _menuRepository.getMenuDetailFlavor(menu);
                     displayFlavor(menuFlavorList);
                 }
             }
@@ -47,7 +46,7 @@ namespace OrderingSystem.KioskApplication.Options
             }
         }
 
-        private async void displayFlavor(List<MenuDetailModel> menuFlavorList)
+        private void displayFlavor(List<MenuDetailModel> menuFlavorList)
         {
             titleOption = "Option A";
             subTitle = "Select Flavor of your choice.";
@@ -58,7 +57,7 @@ namespace OrderingSystem.KioskApplication.Options
                 {
                     FlavorLayout fl = new FlavorLayout(menuFlavorList);
                     fl.Margin = new Padding(20, 30, 0, 0);
-                    fl.FlavorSelected += async (s, e) => await flavorSelected(s, e);
+                    fl.FlavorSelected += (s, e) => flavorSelected(s, e);
                     fl.setTitle(titleOption, menu.MenuName);
                     fl.setSubTitle(subTitle);
                     fl.defaultSelection();
@@ -72,7 +71,7 @@ namespace OrderingSystem.KioskApplication.Options
                         selectedFlavor = menuFlavorList[0];
 
                     }
-                    await fetchMenuSizeByFlavorOption(menu.Menu_id, "");
+                    fetchMenuSizeByFlavorOption(menu.Menu_id, "");
                 }
             }
             catch (Exception)
@@ -81,13 +80,13 @@ namespace OrderingSystem.KioskApplication.Options
             }
 
         }
-        private async Task flavorSelected(object sender, MenuDetailModel e)
+        private void flavorSelected(object sender, MenuDetailModel e)
         {
             try
             {
                 if (e != null)
                 {
-                    await fetchMenuSizeByFlavorOption(e.Menu_id, e.FlavorName);
+                    fetchMenuSizeByFlavorOption(e.Menu_id, e.FlavorName);
                     selectedFlavor = e;
                 }
             }
@@ -96,12 +95,12 @@ namespace OrderingSystem.KioskApplication.Options
                 MessageBox.Show("Internal Server Error.");
             }
         }
-        private async Task fetchMenuSizeByFlavorOption(int id, string flavorName)
+        private void fetchMenuSizeByFlavorOption(int id, string flavorName)
         {
             try
             {
 
-                List<MenuDetailModel> menuSize = await _menuRepository.getMenuDetailSizeByFlavor(id, flavorName);
+                List<MenuDetailModel> menuSize = _menuRepository.getMenuDetailSizeByFlavor(id, flavorName);
                 displaySize(menuSize);
             }
             catch (Exception)
@@ -109,7 +108,7 @@ namespace OrderingSystem.KioskApplication.Options
                 MessageBox.Show("Internal Server Error.");
             }
         }
-        private async void displaySize(List<MenuDetailModel> menuList)
+        private void displaySize(List<MenuDetailModel> menuList)
         {
             if (sc != null) flowPanel.Controls.Remove(sc);
 
@@ -137,7 +136,7 @@ namespace OrderingSystem.KioskApplication.Options
             }
             if (menuList[0].MaxOrder > 0)
             {
-                await frequentlyOrderedOption.diplsyFreqentlyOrdered(menu);
+                frequentlyOrderedOption.diplsyFreqentlyOrdered(menu);
             }
         }
         public List<MenuDetailModel> getFrequentlyOrdered()
@@ -147,7 +146,7 @@ namespace OrderingSystem.KioskApplication.Options
 
             return null;
         }
-        public async Task<List<MenuDetailModel>> confirmOrder()
+        public List<MenuDetailModel> confirmOrder()
         {
             if (selectedFlavor == null && selectedSize == null)
             {
@@ -156,7 +155,7 @@ namespace OrderingSystem.KioskApplication.Options
 
             string flavorName = selectedFlavor?.FlavorName ?? "";
             string sizeName = selectedSize?.SizeName ?? "";
-            var selectedMenu = await _menuRepository.getSelectedMenu(menu.Menu_id, flavorName, sizeName);
+            var selectedMenu = _menuRepository.getSelectedMenu(menu.Menu_id, flavorName, sizeName);
             var purchaseMenu = MenuDetailModel.BuildPurchaseMenu(selectedMenu);
 
             return new List<MenuDetailModel> { purchaseMenu };

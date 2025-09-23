@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Threading.Tasks;
 using MySqlConnector;
 using Newtonsoft.Json;
 using OrderingSystem.DatabaseConnection;
@@ -18,19 +17,19 @@ namespace OrderingSystem.Repository.Menus
         {
             this.orderList = orderList;
         }
-        public async Task<List<MenuDetailModel>> getMenu()
+        public List<MenuDetailModel> getMenu()
         {
             var db = DatabaseHandler.getInstance();
             List<MenuDetailModel> menuList = new List<MenuDetailModel>();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 string query = @"SELECT DISTINCT m.menu_id, m.* FROM v_retrieve_menu m WHERE m.isAvailable = 'Yes'";
                 using (var cmd = new MySqlCommand(query, conn))
                 {
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             MenuDetailModel md = MenuDetailModel.Builder()
                                   .SetMenuID(reader.GetInt32("menu_id"))
@@ -54,97 +53,19 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             return menuList;
         }
-        public async Task<List<MenuDetailModel>> getFrequentlyOrderedTogether(MenuModel menu)
-        {
 
-            var db = DatabaseHandler.getInstance();
-            var tempData = new List<(
-                                int MenuId,
-                                string MenuDescription,
-                                string MenuName,
-                                double Price,
-                                string FlavorName,
-                                string SizeName,
-                                int MenuDetailId,
-                                double DiscountRate,
-                                int? DiscountId,
-                                int maxOrder,
-                                Image image
-                            )>();
-            List<MenuDetailModel> menuList = new List<MenuDetailModel>();
-            try
-            {
-                var conn = await db.getConnection();
-
-                using (var cmd = new MySqlCommand("p_retrieve_FrequentlyOrderedTogether", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@p_menu_id", menu.Menu_id);
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            tempData.Add((
-                               MenuId: reader.GetInt32("menu_id"),
-                               MenuDescription: reader.IsDBNull(reader.GetOrdinal("menu_description")) ? "" : reader.GetString("menu_description"),
-                               MenuName: reader.GetString("menu_name"),
-                               Price: reader.GetDouble("price"),
-                               FlavorName: reader.GetString("flavor_name"),
-                               SizeName: reader.GetString("size_name"),
-                               MenuDetailId: reader.GetInt32("menu_detail_id"),
-                               DiscountRate: reader.GetDouble("discount_rate"),
-                               DiscountId: reader.IsDBNull(reader.GetOrdinal("discount_id")) ? (int?)null : reader.GetInt32("discount_id"),
-                               maxOrder: 0,
-                               image: ImageHelper.GetImageFromBlob(reader)
-                           ));
-                        }
-                    }
-                }
-            }
-            catch (MySqlException)
-            {
-                throw;
-            }
-            finally
-            {
-                await db.closeConnection();
-            }
-
-            foreach (var i in tempData)
-            {
-
-                int max = await getMaxOrderRealTime(i.MenuDetailId, orderList);
-                if (max > 0)
-                {
-                    menuList.Add(MenuDetailModel.Builder()
-                       .SetMenuID(i.MenuId)
-                       .SetMenuDetailID(i.MenuDetailId)
-                       .SetPrice(i.Price)
-                       .SetDiscountRate(i.DiscountRate)
-                       .SetMaxOrder(max)
-                       .SetImage(i.image)
-                       .SetFlavorName(i.FlavorName)
-                       .SetMenuDescription(i.MenuDescription)
-                       .SetMenuName(i.MenuName)
-                       .SetSizeName(i.SizeName)
-                       .SetDiscountId(i.DiscountId)
-                       .Build());
-                }
-            }
-            return menuList;
-        }
-        public async Task<List<MenuDetailModel>> getMenuDetailFlavor(MenuModel menu)
+        public List<MenuDetailModel> getMenuDetailFlavor(MenuModel menu)
         {
             var db = DatabaseHandler.getInstance();
             List<MenuDetailModel> mds = new List<MenuDetailModel>();
             var tempData = new List<(int MenuId, int MenuDetailId, double Price, double DiscountRate, string FlavorName)>();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 string query = @"                        
                             SELECT menu_id,menu_detail_id, price, flavor_name, discount_rate, max_order
                               FROM (
@@ -174,9 +95,9 @@ namespace OrderingSystem.Repository.Menus
                 {
 
                     cmd.Parameters.AddWithValue("@menu_id", menu.Menu_id);
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             tempData.Add((
                                   MenuId: reader.GetInt32("menu_id"),
@@ -186,7 +107,7 @@ namespace OrderingSystem.Repository.Menus
                                   FlavorName: reader.GetString("flavor_name")
                               ));
                         }
-                        await reader.DisposeAsync();
+                        reader.Dispose();
                     }
                 }
             }
@@ -196,10 +117,10 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
                 foreach (var item in tempData)
                 {
-                    int maxOrder = await getMaxOrderRealTime(item.MenuDetailId, orderList);
+                    int maxOrder = getMaxOrderRealTime(item.MenuDetailId, orderList);
                     mds.Add(MenuDetailModel.Builder()
                         .SetMenuID(item.MenuId)
                         .SetMenuDetailID(item.MenuDetailId)
@@ -212,14 +133,93 @@ namespace OrderingSystem.Repository.Menus
             }
             return mds;
         }
-        public async Task<List<MenuDetailModel>> getMenuDetailFlavorPackage(MenuDetailModel md)
+        public List<MenuDetailModel> getFrequentlyOrderedTogether(MenuModel menu)
+        {
+
+            var db = DatabaseHandler.getInstance();
+            var tempData = new List<(
+                                int MenuId,
+                                string MenuDescription,
+                                string MenuName,
+                                double Price,
+                                string FlavorName,
+                                string SizeName,
+                                int MenuDetailId,
+                                double DiscountRate,
+                                int? DiscountId,
+                                int maxOrder,
+                                Image image
+                            )>();
+            List<MenuDetailModel> menuList = new List<MenuDetailModel>();
+            try
+            {
+                var conn = db.getConnection();
+
+                using (var cmd = new MySqlCommand("p_retrieve_FrequentlyOrderedTogether", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@p_menu_id", menu.Menu_id);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            tempData.Add((
+                               MenuId: reader.GetInt32("menu_id"),
+                               MenuDescription: reader.IsDBNull(reader.GetOrdinal("menu_description")) ? "" : reader.GetString("menu_description"),
+                               MenuName: reader.GetString("menu_name"),
+                               Price: reader.GetDouble("price"),
+                               FlavorName: reader.GetString("flavor_name"),
+                               SizeName: reader.GetString("size_name"),
+                               MenuDetailId: reader.GetInt32("menu_detail_id"),
+                               DiscountRate: reader.GetDouble("discount_rate"),
+                               DiscountId: reader.IsDBNull(reader.GetOrdinal("discount_id")) ? (int?)null : reader.GetInt32("discount_id"),
+                               maxOrder: 0,
+                               image: ImageHelper.GetImageFromBlob(reader)
+                           ));
+                        }
+                    }
+                }
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
+
+            foreach (var i in tempData)
+            {
+
+                int max = getMaxOrderRealTime(i.MenuDetailId, orderList);
+                if (max > 0)
+                {
+                    menuList.Add(MenuDetailModel.Builder()
+                       .SetMenuID(i.MenuId)
+                       .SetMenuDetailID(i.MenuDetailId)
+                       .SetPrice(i.Price)
+                       .SetDiscountRate(i.DiscountRate)
+                       .SetMaxOrder(max)
+                       .SetImage(i.image)
+                       .SetFlavorName(i.FlavorName)
+                       .SetMenuDescription(i.MenuDescription)
+                       .SetMenuName(i.MenuName)
+                       .SetSizeName(i.SizeName)
+                       .SetDiscountId(i.DiscountId)
+                       .Build());
+                }
+            }
+            return menuList;
+        }
+        public List<MenuDetailModel> getMenuDetailFlavorPackage(MenuDetailModel md)
         {
             var db = DatabaseHandler.getInstance();
             List<MenuDetailModel> mds = new List<MenuDetailModel>();
             var tempData = new List<(int MenuId, int MenuDetailId, double Price, double DiscountRate, string FlavorName)>();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 string query = @"                        
                            
                             SELECT menu_id,menu_detail_id, price, flavor_name, discount_rate, max_order
@@ -252,9 +252,9 @@ namespace OrderingSystem.Repository.Menus
                     cmd.Parameters.AddWithValue("@menu_id", md.Menu_id);
                     cmd.Parameters.AddWithValue("@id", md.Menudetail_id);
                     cmd.Parameters.AddWithValue("@flavor_name", md.FlavorName);
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             tempData.Add((
                                    MenuId: reader.GetInt32("menu_id"),
@@ -274,10 +274,10 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
                 foreach (var item in tempData)
                 {
-                    int maxOrder = await getMaxOrderRealTime(item.MenuDetailId, orderList);
+                    int maxOrder = getMaxOrderRealTime(item.MenuDetailId, orderList);
                     //MessageBox.Show(item.MenuDetailId.ToString());
                     mds.Add(MenuDetailModel.Builder()
                         .SetMenuID(item.MenuId)
@@ -291,7 +291,7 @@ namespace OrderingSystem.Repository.Menus
             }
             return mds;
         }
-        public async Task<List<MenuDetailModel>> getMenuDetailSizeByFlavor(int id, string flavorName)
+        public List<MenuDetailModel> getMenuDetailSizeByFlavor(int id, string flavorName)
         {
             var db = DatabaseHandler.getInstance();
             List<MenuDetailModel> mds = new List<MenuDetailModel>();
@@ -299,7 +299,7 @@ namespace OrderingSystem.Repository.Menus
             try
             {
                 string query = "SELECT * FROM v_retrieve_menu_details m";
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 if (string.IsNullOrWhiteSpace(flavorName))
                 {
                     query += @" WHERE 
@@ -319,9 +319,9 @@ namespace OrderingSystem.Repository.Menus
                 {
                     cmd.Parameters.AddWithValue("@menu_id", id);
                     cmd.Parameters.AddWithValue("@flavor_name", flavorName);
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             tempData.Add((
                                      MenuId: reader.GetInt32("menu_id"),
@@ -341,10 +341,10 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
                 foreach (var item in tempData)
                 {
-                    int maxOrder = await getMaxOrderRealTime(item.MenuDetailId, orderList);
+                    int maxOrder = getMaxOrderRealTime(item.MenuDetailId, orderList);
 
                     mds.Add(MenuDetailModel.Builder()
                         .SetMenuID(item.MenuId)
@@ -359,7 +359,7 @@ namespace OrderingSystem.Repository.Menus
             }
             return mds;
         }
-        public async Task<bool> isMenuPackage(MenuModel menu)
+        public bool isMenuPackage(MenuModel menu)
         {
             var db = DatabaseHandler.getInstance();
             try
@@ -371,14 +371,14 @@ namespace OrderingSystem.Repository.Menus
 	                                SELECT pg.from_menu_detail_id FROM menu_package pg WHERE LOWER(pg.package_type) = 'not-fixed'
                                 ) AND m.menu_id = @menu_id;
                                 ";
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
 
                 using (var cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@menu_id", menu.Menu_id);
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             return reader.GetInt32("c") >= 1;
                         }
@@ -391,11 +391,11 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             return false;
         }
-        public async Task<MenuDetailModel> getSelectedMenu(int menu_id, string flavorName, string sizeName)
+        public MenuDetailModel getSelectedMenu(int menu_id, string flavorName, string sizeName)
         {
             var db = DatabaseHandler.getInstance();
             var tempData = new List<(
@@ -432,7 +432,7 @@ namespace OrderingSystem.Repository.Menus
 
                 query += " ORDER BY md.menu_detail_id LIMIT 1";
 
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
 
                 using (var cmd = new MySqlCommand(query, conn))
                 {
@@ -443,9 +443,9 @@ namespace OrderingSystem.Repository.Menus
                     if (!string.IsNullOrWhiteSpace(sizeName))
                         cmd.Parameters.AddWithValue("@size_name", sizeName);
 
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
 
                             //int? discountId = reader.IsDBNull(reader.GetOrdinal("discount_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("discount_id"));
@@ -485,12 +485,12 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             foreach (var i in tempData)
             {
 
-                int max = await getMaxOrderRealTime(i.MenuDetailId, orderList);
+                int max = getMaxOrderRealTime(i.MenuDetailId, orderList);
                 return MenuDetailModel.Builder()
                    .SetMenuID(i.MenuId)
                    .SetMenuDetailID(i.MenuDetailId)
@@ -508,12 +508,12 @@ namespace OrderingSystem.Repository.Menus
             }
             return null;
         }
-        public async Task<int> getMaxOrderRealTime(int menu_id, List<MenuDetailModel> md)
+        public int getMaxOrderRealTime(int menu_id, List<MenuDetailModel> md)
         {
             var db = DatabaseHandler.getInstance();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
 
                 using (var cmd = new MySqlCommand("p_menu_max_order", conn))
                 {
@@ -522,9 +522,9 @@ namespace OrderingSystem.Repository.Menus
                     cmd.Parameters.AddWithValue("@p_menu_detail_id", menu_id);
                     cmd.Parameters.AddWithValue("@p_json", json);
 
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             return reader.GetInt32("max_order");
                         }
@@ -537,11 +537,11 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             return 0;
         }
-        public async Task<List<MenuDetailModel>> getMenuId(int menu_id)
+        public List<MenuDetailModel> getMenuId(int menu_id)
         {
             List<MenuDetailModel> intz = new List<MenuDetailModel>();
 
@@ -628,14 +628,14 @@ namespace OrderingSystem.Repository.Menus
                 //            )
                 //            ORDER BY md.menu_id, f.flavor_name";
 
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
 
                 using (var cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@menu_id", menu_id);
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             tempData.Add((
                                     reader.GetInt32("menu_id"),
@@ -666,11 +666,11 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
 
                 foreach (var i in tempData)
                 {
-                    int max = await getMaxOrderRealTime(i.MenuDetailId, orderList);
+                    int max = getMaxOrderRealTime(i.MenuDetailId, orderList);
                     intz.Add(MenuDetailModel.Builder()
                              .SetMenuID(i.MenuId)
                              .SetMenuName(i.MenuName)
@@ -685,13 +685,13 @@ namespace OrderingSystem.Repository.Menus
             }
             return intz;
         }
-        public async Task<double> getNewPackagePrice(int menu_id, List<MenuDetailModel> includedId)
+        public double getNewPackagePrice(int menu_id, List<MenuDetailModel> includedId)
         {
             var db = DatabaseHandler.getInstance();
 
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
 
                 using (var cmd = new MySqlCommand("p_menu_package_price", conn))
                 {
@@ -700,9 +700,9 @@ namespace OrderingSystem.Repository.Menus
                     cmd.Parameters.AddWithValue("@p_package_id", menu_id);
                     cmd.Parameters.AddWithValue("@p_included", json);
 
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             decimal d = reader.GetDecimal(0);
                             return (double)d;
@@ -716,9 +716,10 @@ namespace OrderingSystem.Repository.Menus
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             return 0;
         }
+
     }
 }

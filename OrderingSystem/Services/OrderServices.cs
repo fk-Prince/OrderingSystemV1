@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using OrderingSystem.Exceptions;
 using OrderingSystem.Model;
 using OrderingSystem.Repository;
@@ -14,27 +13,27 @@ namespace OrderingSystem.KioskApplication.Services
             this.orderRepository = orderRepository;
         }
 
-        public async Task<bool> confirmOrder(OrderModel order)
+        public bool confirmOrder(OrderModel order)
         {
-            return await orderRepository.saveNewOrder(order);
+            return orderRepository.saveNewOrder(order);
         }
-        public async Task<List<OrderModel>> getAllOrders(string order_id)
+        public List<OrderModel> getAllOrders(string order_id)
         {
-            bool existsting = await orderRepository.getOrderExists(order_id);
+            bool existsting = orderRepository.getOrderExists(order_id);
             if (!existsting)
             {
                 throw new OrderNotFound("Order-ID not Found.");
             }
-            bool isAvalable = await orderRepository.getOrderAvailable(order_id);
+            bool isAvalable = orderRepository.getOrderAvailable(order_id);
             if (!isAvalable)
             {
                 throw new OrderInvalid("Order-ID expired.");
             }
-            return await orderRepository.getOrders(order_id); ;
+            return orderRepository.getOrders(order_id); ;
         }
-        public async Task<bool> payOrder(string order_id, int staff_id, string payment_method)
+        public bool payOrder(string order_id, int staff_id, string payment_method)
         {
-            return await orderRepository.payOrder(order_id, staff_id, payment_method);
+            return orderRepository.payOrder(order_id, staff_id, payment_method);
         }
     }
 }

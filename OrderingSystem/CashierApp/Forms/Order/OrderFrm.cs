@@ -95,7 +95,7 @@ namespace OrderingSystem.CashierApp.Forms
             string method = "credit-card";
             payment(method);
         }
-        private async void payment(string payment_method)
+        private void payment(string payment_method)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace OrderingSystem.CashierApp.Forms
                     MessageBox.Show("No Orders");
                     return;
                 }
-                bool result = await orderServices.payOrder(order_id, staff_id, payment_method);
+                bool result = orderServices.payOrder(order_id, staff_id, payment_method);
                 if (result) MessageBox.Show("Payment Success");
                 else MessageBox.Show("Payment Failed");
             }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 using MySqlConnector;
 using OrderingSystem.DatabaseConnection;
 using OrderingSystem.Model;
@@ -10,18 +9,18 @@ namespace OrderingSystem.Repository.Order
 {
     public class OrderRepository : IOrderRepository
     {
-        public async Task<bool> getOrderAvailable(string order_id)
+        public bool getOrderAvailable(string order_id)
         {
             var db = DatabaseHandler.getInstance();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 using (var cmd = new MySqlCommand("SELECT COUNT(*) as c FROM orders WHERE order_id = @order_id AND available_until > NOW()", conn))
                 {
                     cmd.Parameters.AddWithValue("@order_id", order_id);
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             return reader.GetInt32("c") > 0;
                         }
@@ -34,23 +33,23 @@ namespace OrderingSystem.Repository.Order
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             return false;
         }
 
-        public async Task<bool> getOrderExists(string order_id)
+        public bool getOrderExists(string order_id)
         {
             var db = DatabaseHandler.getInstance();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 using (var cmd = new MySqlCommand("SELECT COUNT(*) as c FROM orders WHERE order_id = @order_id", conn))
                 {
                     cmd.Parameters.AddWithValue("@order_id", order_id);
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             return reader.GetInt32("c") > 0;
                         }
@@ -63,25 +62,25 @@ namespace OrderingSystem.Repository.Order
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             return false;
         }
 
-        public async Task<List<OrderModel>> getOrders(string order_id)
+        public List<OrderModel> getOrders(string order_id)
         {
             List<OrderModel> orderList = new List<OrderModel>();
             var db = DatabaseHandler.getInstance();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 using (var cmd = new MySqlCommand("p_retrieve_order_v2", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@p_order_id", order_id);
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             OrderModel om = OrderModel.Builder()
                                 .SetOrderId(reader.GetString("order_id"))
@@ -103,17 +102,17 @@ namespace OrderingSystem.Repository.Order
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
             return orderList;
         }
 
-        public async Task<bool> saveNewOrder(OrderModel order)
+        public bool saveNewOrder(OrderModel order)
         {
             var db = DatabaseHandler.getInstance();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 using (var cmd = new MySqlCommand("p_New_Order", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -127,7 +126,7 @@ namespace OrderingSystem.Repository.Order
                     {
                         cmd.Parameters.AddWithValue("@p_coupon_code", DBNull.Value);
                     }
-                    await cmd.ExecuteNonQueryAsync();
+                    cmd.ExecuteNonQuery();
                     return true;
                 }
             }
@@ -137,23 +136,23 @@ namespace OrderingSystem.Repository.Order
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
         }
 
-        public async Task<bool> payOrder(string order_id, int staff_id, string payment_method)
+        public bool payOrder(string order_id, int staff_id, string payment_method)
         {
             var db = DatabaseHandler.getInstance();
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
                 using (var cmd = new MySqlCommand("p_Confirm_Payment", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@p_order_id ", order_id);
                     cmd.Parameters.AddWithValue("@p_staff_id", staff_id);
                     cmd.Parameters.AddWithValue("@p_payment_method ", payment_method);
-                    await cmd.ExecuteNonQueryAsync();
+                    cmd.ExecuteNonQuery();
                     return true;
                 }
             }
@@ -163,7 +162,7 @@ namespace OrderingSystem.Repository.Order
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
 
         }

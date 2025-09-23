@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using MySqlConnector;
 using OrderingSystem.DatabaseConnection;
 
@@ -7,19 +6,19 @@ namespace OrderingSystem.Repository.Coupon
 {
     public class CouponRepository : ICouponRepository
     {
-        public async Task<Model.CouponModel> getCoupon(string code)
+        public Model.CouponModel getCoupon(string code)
         {
             var db = DatabaseHandler.getInstance();
 
             try
             {
-                var conn = await db.getConnection();
+                var conn = db.getConnection();
 
                 MySqlCommand cmd = new MySqlCommand("SELECT * FROM Coupon WHERE coupon_code = @coupon_code LIMIT 1", conn);
                 cmd.Parameters.AddWithValue("@coupon_code", code);
-                MySqlDataReader reader = await cmd.ExecuteReaderAsync();
+                MySqlDataReader reader = cmd.ExecuteReader();
 
-                while (await reader.ReadAsync())
+                while (reader.Read())
                 {
                     return new Model.CouponModel(
                         reader.GetString("coupon_code"),
@@ -35,7 +34,7 @@ namespace OrderingSystem.Repository.Coupon
             }
             finally
             {
-                await db.closeConnection();
+                db.closeConnection();
             }
 
             return null;

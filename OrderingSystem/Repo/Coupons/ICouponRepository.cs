@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace OrderingSystem.Repository
+﻿namespace OrderingSystem.Repository
 {
     public interface ICouponRepository
     {
-        Task<Model.CouponModel> getCoupon(string code);
+        Model.CouponModel getCoupon(string code);
     }
 }

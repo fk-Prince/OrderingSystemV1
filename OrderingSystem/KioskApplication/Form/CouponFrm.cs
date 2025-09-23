@@ -46,7 +46,7 @@ namespace OrderingSystem.KioskApplication
             }
         }
 
-        private async void guna2Button1_Click(object sender, EventArgs e)
+        private void guna2Button1_Click(object sender, EventArgs e)
         {
             message.Visible = false;
             Guna2Button b = (Guna2Button)sender;
@@ -66,7 +66,7 @@ namespace OrderingSystem.KioskApplication
             this.b = b;
             try
             {
-                CouponModel c = await couponRepository.getCoupon(txtCoupon.Text);
+                CouponModel c = couponRepository.getCoupon(txtCoupon.Text);
                 if (currentCoupon != null)
                 {
                     message.Text = "You’ve already selected a coupon. If you want to change it, please click gift icon.";

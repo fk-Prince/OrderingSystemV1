@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using OrderingSystem.KioskApplication.Components;
@@ -44,13 +43,13 @@ namespace OrderingSystem.KioskApplication.Layouts
             displayFlavor(menuDetail);
         }
 
-        private async Task fetchMenuSizeByFlavorOption(int menuId, string flavorName)
+        private void fetchMenuSizeByFlavorOption(int menuId, string flavorName)
         {
             try
             {
 
-                List<MenuDetailModel> menuSize = await _menuRepository.getMenuDetailSizeByFlavor(menuId, flavorName);
-                await displaySize(menuSize);
+                List<MenuDetailModel> menuSize = _menuRepository.getMenuDetailSizeByFlavor(menuId, flavorName);
+                displaySize(menuSize);
             }
             catch (Exception)
             {
@@ -58,13 +57,13 @@ namespace OrderingSystem.KioskApplication.Layouts
             }
         }
 
-        private async void displayFlavor(MenuDetailModel menuFlavorList)
+        private void displayFlavor(MenuDetailModel menuFlavorList)
         {
             titleOption = "Option A";
             subTitle = $"Select Flavor of your choice.";
             try
             {
-                List<MenuDetailModel> menuSize = await _menuRepository.getMenuDetailFlavorPackage(menuDetail);
+                List<MenuDetailModel> menuSize = _menuRepository.getMenuDetailFlavorPackage(menuDetail);
                 List<MenuDetailModel> mds = new List<MenuDetailModel>();
                 mds.Add(menuFlavorList);
                 mds.AddRange(menuSize);
@@ -87,7 +86,7 @@ namespace OrderingSystem.KioskApplication.Layouts
                 else
                 {
                     selectedFlavor = menuDetail;
-                    await fetchMenuSizeByFlavorOption(menuDetail.Menu_id, menuDetail.FlavorName);
+                    fetchMenuSizeByFlavorOption(menuDetail.Menu_id, menuDetail.FlavorName);
                 }
             }
             catch (Exception)
@@ -98,7 +97,7 @@ namespace OrderingSystem.KioskApplication.Layouts
 
 
 
-        private async void flavorSelected(object sender, MenuDetailModel e)
+        private void flavorSelected(object sender, MenuDetailModel e)
         {
             selectedFlavor = e;
 
@@ -113,10 +112,10 @@ namespace OrderingSystem.KioskApplication.Layouts
                 resetHeight();
             }
             if (e != null)
-                await fetchMenuSizeByFlavorOption(e.Menu_id, e.FlavorName);
+                fetchMenuSizeByFlavorOption(e.Menu_id, e.FlavorName);
         }
 
-        private async Task displaySize(List<MenuDetailModel> menuList)
+        private void displaySize(List<MenuDetailModel> menuList)
         {
             try
             {
@@ -142,14 +141,14 @@ namespace OrderingSystem.KioskApplication.Layouts
                     sc.setTitleOption(titleOption, menuList[0].MenuName);
                     sc.setSubTitle(subTitle);
 
-                    sc.SizeSelected += async (s, e) =>
+                    sc.SizeSelected += (s, e) =>
                     {
                         selectedSize = e;
 
                         string flavorName = selectedFlavor?.FlavorName ?? "";
                         string sizeName = selectedSize?.SizeName ?? "";
                         if (flavorName == "" && sizeName == "") return;
-                        selectedMenu = await _menuRepository.getSelectedMenu(menuList[0].Menu_id, flavorName, sizeName);
+                        selectedMenu = _menuRepository.getSelectedMenu(menuList[0].Menu_id, flavorName, sizeName);
                     };
 
                     flowPanel.Controls.Add(sc);
@@ -162,7 +161,7 @@ namespace OrderingSystem.KioskApplication.Layouts
                     string flavorName = selectedFlavor?.FlavorName ?? "";
                     string sizeName = selectedSize?.SizeName ?? "";
 
-                    selectedMenu = await _menuRepository.getSelectedMenu(menuList[0].Menu_id, flavorName, sizeName);
+                    selectedMenu = _menuRepository.getSelectedMenu(menuList[0].Menu_id, flavorName, sizeName);
                 }
             }
             catch (Exception)

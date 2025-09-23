@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OrderingSystem.Exceptions;
 using OrderingSystem.KioskApplication.Options;
@@ -27,7 +26,7 @@ namespace OrderingSystem.KioskApplication
             orderList = new List<MenuDetailModel>();
 
             displayDetails(menu);
-            HandleCreated += async (s, e) => { await init(menu); };
+            HandleCreated += (s, e) => { init(menu); };
         }
 
         private void displayDetails(MenuDetailModel menu)
@@ -37,12 +36,12 @@ namespace OrderingSystem.KioskApplication
             description.Text = menu.MenuDescription;
         }
 
-        private async Task init(MenuDetailModel menu)
+        private void init(MenuDetailModel menu)
         {
             try
             {
 
-                if (await _menuRepository.isMenuPackage(menu))
+                if (_menuRepository.isMenuPackage(menu))
                 {
                     menuOptions = new PackageOption(_menuRepository, flowPanel);
                 }
@@ -59,7 +58,7 @@ namespace OrderingSystem.KioskApplication
                         bb.Enabled = false;
                     };
                 }
-                await menuOptions.menuOptions(menu);
+                menuOptions.menuOptions(menu);
             }
             catch (Exception)
             {
@@ -71,7 +70,7 @@ namespace OrderingSystem.KioskApplication
         {
             DialogResult = DialogResult.OK;
         }
-        private async void confirmOrder(object sender, EventArgs e)
+        private void confirmOrder(object sender, EventArgs e)
         {
             try
             {
@@ -84,7 +83,7 @@ namespace OrderingSystem.KioskApplication
                             orderList.AddRange(frequentlyOrdered);
                     }
 
-                    var orders = await menuOptions.confirmOrder();
+                    var orders = menuOptions.confirmOrder();
                     if (orders == null || orders.Count == 0)
                         return;
 

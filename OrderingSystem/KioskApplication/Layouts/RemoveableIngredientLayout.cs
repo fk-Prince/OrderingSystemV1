@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using Guna.UI2.WinForms;
 using OrderingSystem.Model;
 using OrderingSystem.Repository.Ingredients;
@@ -20,14 +19,14 @@ namespace OrderingSystem.KioskApplication.Components
             InitializeComponent();
             this.menu = menu;
             removeIngredients = new List<IngredientModel>();
-            HandleCreated += async (s, e) => await init();
+            HandleCreated += (s, e) => init();
             cardLayout();
         }
         public List<IngredientModel> getRemoveIngredient() { return removeIngredients; }
-        private async Task init()
+        private void init()
         {
-            List<IngredientModel> ingredientList = await ingredientRepository.getIngredientsOfMenu(menu);
-            display(ingredientList);
+            //List<IngredientModel> ingredientList =  ingredientRepository.getIngredientsOfMenu(menu);
+            //display(ingredientList);
         }
         private void cardLayout()
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using OrderingSystem.CashierApp.Forms;
@@ -37,16 +36,16 @@ namespace OrderingSystem
             cartServices.quantityChanged += displayTotal;
         }
 
-        private async void KioskLayout_Load(object sender, System.EventArgs e)
+        private void KioskLayout_Load(object sender, System.EventArgs e)
         {
-            await fetchDataMenu();
-            await fetchDataCategory();
+            fetchDataMenu();
+            fetchDataCategory();
         }
-        private async Task fetchDataMenu()
+        private void fetchDataMenu()
         {
             try
             {
-                List<MenuDetailModel> menuList = await menuRepository.getMenu();
+                List<MenuDetailModel> menuList = menuRepository.getMenu();
                 displayMenu(menuList);
             }
             catch (Exception)
@@ -54,11 +53,11 @@ namespace OrderingSystem
                 MessageBox.Show("Internal Server Error.");
             }
         }
-        private async Task fetchDataCategory()
+        private void fetchDataCategory()
         {
             try
             {
-                List<CategoryModel> catList = await categoryRepository.getCategories();
+                List<CategoryModel> catList = categoryRepository.getCategories();
                 displayCategories(catList);
             }
             catch (Exception)
@@ -233,7 +232,7 @@ namespace OrderingSystem
             m.Show();
         }
 
-        private async void guna2Button4_Click(object sender, EventArgs e)
+        private void guna2Button4_Click(object sender, EventArgs e)
         {
             try
             {
@@ -246,7 +245,7 @@ namespace OrderingSystem
                     .SetCoupon(couponSelected)
                     .Build();
 
-                bool result = await os.confirmOrder(or);
+                bool result = os.confirmOrder(or);
                 if (result) MessageBox.Show("Order Completed.");
                 else MessageBox.Show("Order Failed.");
             }
