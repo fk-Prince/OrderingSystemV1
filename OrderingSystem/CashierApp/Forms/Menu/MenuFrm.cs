@@ -29,8 +29,13 @@ namespace OrderingSystem.CashierApp.Forms
 
         public void showNewMenu()
         {
-
-            loadForm(new NewMenu());
+            NewMenu f = new NewMenu();
+            DialogResult rs = f.ShowDialog(this);
+            if (rs == DialogResult.OK)
+            {
+                f.Hide();
+            }
+            //loadForm(new NewMenu());
         }
 
         public void showUpdate()

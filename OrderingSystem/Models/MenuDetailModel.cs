@@ -22,6 +22,7 @@ namespace OrderingSystem.Model
         public interface IMenuDetailBuilder
         {
             MenuDetailBuilder SetMenuDetailID(int id);
+            MenuDetailBuilder SetMenuCategoryName(string name);
             MenuDetailBuilder SetPrice(double price);
             MenuDetailBuilder SetSizeName(string sizeName);
             MenuDetailBuilder SetFlavorName(string text);
@@ -154,6 +155,11 @@ namespace OrderingSystem.Model
                 return _menu;
             }
 
+            public MenuDetailBuilder SetMenuCategoryName(string name)
+            {
+                _menu.menuCategoryName = name;
+                return this;
+            }
         }
     }
 }

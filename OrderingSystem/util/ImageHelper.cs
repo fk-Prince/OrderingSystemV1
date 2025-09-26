@@ -40,7 +40,22 @@ namespace OrderingSystem
             }
         }
 
-    }
+        public static Image PathToImage(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    return Image.FromFile(path);
+                }
+            }
+            catch (Exception)
+            {
+                return Properties.Resources.placeholder;
+            }
+            return Properties.Resources.placeholder;
+        }
 
+    }
 
 }

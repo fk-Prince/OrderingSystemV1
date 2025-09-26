@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using MySqlConnector;
 using OrderingSystem.DatabaseConnection;
 using OrderingSystem.Model;
@@ -7,6 +8,31 @@ namespace OrderingSystem.Repo.CashierMenuRepository
 {
     public class CashierMenuRepository : ICashierMenuRepository
     {
+        public bool createRegularMenu(MenuDetailModel md)
+        {
+
+            var db = DatabaseHandler.getInstance();
+            try
+            {
+                var con = db.getConnection();
+                using (var cmd = new MySqlCommand("createRegularMenu", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    return true;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
+            return false;
+        }
+
         public List<string> getFlavor()
         {
             List<string> list = new List<string>();
@@ -14,7 +40,7 @@ namespace OrderingSystem.Repo.CashierMenuRepository
             try
             {
                 var con = db.getConnection();
-                using (var cmd = new MySqlCommand("SELECT DISTINCT flavor_name FROM flavor", con))
+                using (var cmd = new MySqlCommand("SELECT DISTINCT flavor_name FROM menu_detail", con))
                 {
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -79,7 +105,7 @@ namespace OrderingSystem.Repo.CashierMenuRepository
             try
             {
                 var con = db.getConnection();
-                using (var cmd = new MySqlCommand("SELECT DISTINCT size_name FROM size", con))
+                using (var cmd = new MySqlCommand("SELECT DISTINCT size_name FROM menu_detail", con))
                 {
                     using (var reader = cmd.ExecuteReader())
                     {
