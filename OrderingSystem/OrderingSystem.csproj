@@ -106,10 +106,16 @@
       <DependentUpon>RestockIngredient.cs</DependentUpon>
     </Compile>
     <Compile Include="CashierApp\Forms\Menu\MenuCard.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CashierApp\Forms\Menu\MenuCard.Designer.cs">
       <DependentUpon>MenuCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Menu\NewMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashierApp\Forms\Menu\NewMenu.Designer.cs">
+      <DependentUpon>NewMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="CashierApp\Forms\Order\OrderDialog.cs">
       <SubType>Form</SubType>
@@ -278,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CashierApp\Forms\Menu\MenuCard.resx">
       <DependentUpon>MenuCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashierApp\Forms\Menu\NewMenu.resx">
+      <DependentUpon>NewMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CashierApp\Forms\Order\OrderDialog.resx">
       <DependentUpon>OrderDialog.cs</DependentUpon>

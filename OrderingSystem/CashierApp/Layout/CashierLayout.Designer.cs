@@ -210,7 +210,7 @@
             this.guna2Button12.Text = "Ingredients";
             this.guna2Button12.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.guna2Button12.TextOffset = new System.Drawing.Point(20, 0);
-            this.guna2Button12.Click += new System.EventHandler(this.guna2Button12_Click);
+            this.guna2Button12.Click += new System.EventHandler(this.showIngredient);
             // 
             // s1
             // 
@@ -242,6 +242,7 @@
             this.guna2Button1.Text = "Update Menu";
             this.guna2Button1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.guna2Button1.TextOffset = new System.Drawing.Point(50, 0);
+            this.guna2Button1.Click += new System.EventHandler(this.updateMenu);
             // 
             // guna2Button15
             // 
@@ -261,6 +262,7 @@
             this.guna2Button15.Text = "New Bundle";
             this.guna2Button15.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.guna2Button15.TextOffset = new System.Drawing.Point(50, 0);
+            this.guna2Button15.Click += new System.EventHandler(this.bundleMenu);
             // 
             // guna2Button4
             // 
@@ -280,6 +282,7 @@
             this.guna2Button4.Text = "New Menu";
             this.guna2Button4.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.guna2Button4.TextOffset = new System.Drawing.Point(50, 0);
+            this.guna2Button4.Click += new System.EventHandler(this.newMenu);
             // 
             // guna2Button6
             // 
@@ -300,7 +303,7 @@
             this.guna2Button6.Text = "Menu";
             this.guna2Button6.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.guna2Button6.TextOffset = new System.Drawing.Point(20, 0);
-            this.guna2Button6.Click += new System.EventHandler(this.guna2Button6_Click);
+            this.guna2Button6.Click += new System.EventHandler(this.showMenu);
             // 
             // guna2Button14
             // 
@@ -347,7 +350,7 @@
             // CashierLayout
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1350, 661);
+            this.ClientSize = new System.Drawing.Size(1366, 700);
             this.Controls.Add(this.guna2Panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximumSize = new System.Drawing.Size(1920, 1080);

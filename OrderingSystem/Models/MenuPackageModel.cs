@@ -22,12 +22,26 @@ namespace OrderingSystem.Model
                 .SetDiscountId(xx.DiscountId)
                 .SetMenuDetailList(included)
                 .SetPurchaseQty(1)
-                .SetSizeName(xx.SizeName)
-                .SetFlavorName(xx.FlavorName)
                 .SetPrice(newPrice)
                 .Build();
         }
-        public class MenuPackageBuilder
+
+        public interface IMenuPackageBuilder
+        {
+            MenuPackageBuilder SetMenuDetailID(int id);
+            MenuPackageBuilder SetPrice(double price);
+            MenuPackageBuilder SetSizeName(string sizeName);
+            MenuPackageBuilder SetFlavorName(string text);
+            MenuPackageBuilder SetEstimatedTime(TimeSpan estimatedTime);
+            MenuPackageBuilder SetDiscountRate(double rate);
+            MenuPackageBuilder SetDiscountId(int? id);
+            MenuPackageBuilder SetMaxOrder(int maxOrder);
+            MenuPackageBuilder SetPurchaseQty(int purchaseQty);
+            MenuPackageBuilder SetMenuDetailList(List<MenuDetailModel> list);
+            MenuPackageModel Build();
+        }
+
+        public class MenuPackageBuilder : IMenuPackageBuilder
         {
             protected MenuPackageModel _menu;
             public MenuPackageBuilder()
@@ -35,16 +49,9 @@ namespace OrderingSystem.Model
                 _menu = new MenuPackageModel();
                 _menu.menuDetailList = new List<MenuDetailModel>();
             }
-
             public MenuPackageBuilder SetMenuName(string name)
             {
                 _menu.menuName = name;
-                return this;
-            }
-
-            public MenuPackageBuilder SetMenuDescription(string txt)
-            {
-                _menu.menuDescription = txt;
                 return this;
             }
 
@@ -117,16 +124,11 @@ namespace OrderingSystem.Model
                 return this;
             }
 
-            public MenuPackageBuilder AddMenuDetail(MenuDetailModel detail)
-            {
-                _menu.menuDetailList.Add(detail);
-                return this;
-            }
-
             public MenuPackageModel Build()
             {
                 return _menu;
             }
+
         }
     }
 }

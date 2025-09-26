@@ -8,6 +8,8 @@ namespace OrderingSystem.CashierApp.Forms
         public IngredientFrm()
         {
             InitializeComponent();
+            // FILE PATH
+            // INGREDIENT BUILDER => MODELS / INGREDIENTMODEL
         }
 
         public void loadForm(Form f)

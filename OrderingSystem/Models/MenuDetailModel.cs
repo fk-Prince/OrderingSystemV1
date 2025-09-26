@@ -19,6 +19,24 @@ namespace OrderingSystem.Model
 
         public static MenuDetailBuilder Builder() => new MenuDetailBuilder();
 
+        public interface IMenuDetailBuilder
+        {
+            MenuDetailBuilder SetMenuDetailID(int id);
+            MenuDetailBuilder SetPrice(double price);
+            MenuDetailBuilder SetSizeName(string sizeName);
+            MenuDetailBuilder SetFlavorName(string text);
+            MenuDetailBuilder SetEstimatedTime(TimeSpan estimatedTime);
+            MenuDetailBuilder SetDiscountRate(double rate);
+            MenuDetailBuilder SetDiscountId(int? id);
+            MenuDetailBuilder SetMaxOrder(int maxOrder);
+            MenuDetailBuilder SetPurchaseQty(int purchaseQty);
+            MenuDetailBuilder SetMenuDescription(string txt);
+            MenuDetailBuilder SetImage(Image img);
+            MenuDetailBuilder SetMenuCategoryID(int id);
+            MenuDetailBuilder SetMenuID(int id);
+            MenuDetailModel Build();
+        }
+
         public double GetDiscountedPrice()
         {
             return Price - (Price * DiscountRate);
@@ -34,13 +52,11 @@ namespace OrderingSystem.Model
               .SetDiscountId(xx.DiscountId)
               .SetImage(xx.Image)
               .SetPurchaseQty(1)
-              .SetSizeName(xx.SizeName)
-              .SetFlavorName(xx.FlavorName)
               .SetPrice(xx.GetDiscountedPrice())
               .Build();
         }
 
-        public class MenuDetailBuilder
+        public class MenuDetailBuilder : IMenuDetailBuilder
         {
             protected MenuDetailModel _menu;
 
@@ -103,10 +119,6 @@ namespace OrderingSystem.Model
                 return this;
             }
 
-            public MenuDetailModel Build()
-            {
-                return _menu;
-            }
 
             public MenuDetailBuilder SetMenuName(string name)
             {
@@ -137,7 +149,10 @@ namespace OrderingSystem.Model
                 _menu.image = img;
                 return this;
             }
-
+            public MenuDetailModel Build()
+            {
+                return _menu;
+            }
 
         }
     }

@@ -7,6 +7,8 @@ namespace OrderingSystem.CashierApp.Forms.Ingredient
         public AddIngredient()
         {
             InitializeComponent();
+            // FILE PATH
+            // INGREDIENT BUILDER => MODELS / INGREDIENTMODEL
         }
     }
 }

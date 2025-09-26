@@ -5,6 +5,7 @@ namespace OrderingSystem.CashierApp.Forms
     public partial class CashierLayout : Form
     {
         private IngredientFrm ingredientInstance;
+        private MenuFrm menuIntance;
         public CashierLayout()
         {
             InitializeComponent();
@@ -42,39 +43,51 @@ namespace OrderingSystem.CashierApp.Forms
             if (s1.Visible == true) s1.Visible = false;
             if (ingredientSub.Visible == true) ingredientSub.Visible = false;
         }
-
-
         private void guna2Button14_Click(object sender, System.EventArgs e)
         {
             loadForm(OrderFrm.orderFactory());
         }
-
-        private void guna2Button6_Click(object sender, System.EventArgs e)
+        private void showMenu(object sender, System.EventArgs e)
         {
+            loadForm(menuIntance = new MenuFrm());
             showSub(s1);
         }
-        private void guna2Button12_Click(object sender, System.EventArgs e)
+        private void newMenu(object sender, System.EventArgs e)
+        {
+            if (menuIntance == null) return;
+            menuIntance.showNewMenu();
+        }
+        private void bundleMenu(object sender, System.EventArgs e)
+        {
+            if (menuIntance == null) return;
+            menuIntance.showBundle();
+        }
+        private void updateMenu(object sender, System.EventArgs e)
+        {
+            if (menuIntance == null) return;
+            menuIntance.showUpdate();
+        }
+        private void showIngredient(object sender, System.EventArgs e)
         {
             showSub(ingredientSub);
             loadForm(ingredientInstance = new IngredientFrm());
         }
-
         private void restockIngredient(object sender, System.EventArgs e)
         {
             if (ingredientInstance == null) return;
             ingredientInstance.showRestockIngredient();
         }
-
         private void addIngredient(object sender, System.EventArgs e)
         {
             if (ingredientInstance == null) return;
             ingredientInstance.showAddIngredient();
         }
-
         private void deductIngredient(object sender, System.EventArgs e)
         {
             if (ingredientInstance == null) return;
             ingredientInstance.showDeductIngredient();
         }
+
+
     }
 }
